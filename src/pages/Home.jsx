@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import Download from "../components/Download";
 
 const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
+  return <Download />;
+};
 
-export default Home
+export default Home;
