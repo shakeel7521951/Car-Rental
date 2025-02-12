@@ -1,16 +1,17 @@
 import React from "react";
-import Download from "../components/Download";
-import Testimonial from "../components/Testimonial";
-import { ApiProvider } from "../context";
+import Header from "../components/home/Header";
+import Working from "../components/home/Working";
+import WhyUs from "../components/home/WhyUs";
+import PopularServices from "../components/home/PopularServices";
 
 const Home = () => {
   return (
-    <>
-      <ApiProvider>
-        <Testimonial />
-      </ApiProvider>
-      <Download />
-    </>
+    <div>
+      <Header />
+      <Working />
+      <WhyUs />
+      <PopularServices />
+    </div>
   );
 };
 
