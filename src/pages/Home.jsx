@@ -14,7 +14,7 @@ const Home = () => {
         <PopularServices />
         <Download />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
