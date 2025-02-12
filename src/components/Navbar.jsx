@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Menu, X } from "lucide-react"; // Icon for Mobile Toggle
-import logo from "/footerContent/Frame.png"; // Adjust path if needed
+import { Menu, X } from "lucide-react";
+import logo from "../assets/footerContent/Frame.png";
 import { Link } from "react-router-dom";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

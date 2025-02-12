@@ -38,7 +38,7 @@ const WhyUs = () => {
     <div className="w-full flex flex-col md:flex-row gap-10 mt-16 px-6 md:px-12 lg:px-10 items-center">
       {/* Left Section - Image */}
       <div className="relative md:w-1/2">
-        <img src={Vector} alt="Vector" className="w-full" />
+        <img src={Vector} alt="Vector" className="w-full ms-8" />
         <img
           src={Audi}
           alt="Audi"

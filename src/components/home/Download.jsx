@@ -1,7 +1,8 @@
 import React from "react";
-import phone from "/footerContent/phonemockup.png"; // Ensure correct path
-import vector from "/footerContent/Vector.png";
+import phone from "../../assets/home/phonemockup.png";
+import vector from "../../assets/home/Vector2.png";
 import { Link } from "react-router-dom";
+
 const Download = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-16 px-6 py-12">
