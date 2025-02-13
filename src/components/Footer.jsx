@@ -1,11 +1,11 @@
 import React from "react";
-import logo from "/footerContent/Frame.png";
-import call from "/footerContent/call.png";
-import location from "/footerContent/location.png";
-import sms from "/footerContent/sms.png";
-import facebook from "/footerContent/facebook.png";
-import insta from "/footerContent/instagram.png";
-import youtube from "/footerContent/youtube.png";
+import logo from '../assets/footerContent/Frame.png';
+import call from "../assets/footerContent/call.png";
+import location from "../assets/footerContent/location.png";
+import sms from "../assets/footerContent/sms.png";
+import facebook from "../assets/footerContent/facebook.png";
+import insta from "../assets/footerContent/instagram.png";
+import youtube from "../assets/footerContent/youtube.png";
 
 const data = [
   {

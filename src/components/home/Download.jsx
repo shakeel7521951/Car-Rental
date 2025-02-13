@@ -1,7 +1,7 @@
 import React from "react";
+import phone from "../../assets/home/phonemockup.png";
+import vector from "../../assets/home/Vector2.png";
 import { Link } from "react-router-dom";
-import phone from "/footerContent/phonemockup.png"; // Ensure the correct path
-import vector from "/footerContent/Vector.png";
 
 const Download = () => {
   return (

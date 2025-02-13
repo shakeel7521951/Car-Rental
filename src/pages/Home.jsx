@@ -3,7 +3,7 @@ import Header from "../components/home/Header";
 import Working from "../components/home/Working";
 import WhyUs from "../components/home/WhyUs";
 import PopularServices from "../components/home/PopularServices";
-import Testimonial from "../components/Testimonial";
+import Download from "../components/home/Download";
 
 const Home = () => {
   return (
@@ -12,7 +12,7 @@ const Home = () => {
       <Working />
       <WhyUs />
       <PopularServices />
-      <Testimonial />
+      <Download />
     </div>
   );
 };
