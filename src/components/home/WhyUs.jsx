@@ -49,19 +49,19 @@ const WhyUs = () => {
       {/* Right Section - Content */}
       <div className="md:w-1/2">
         {/* Tagline */}
-        <p className="bg-blue-100 text-blue-600 px-4 py-2 rounded-full w-fit font-semibold text-sm">
+        <p className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full w-fit font-semibold text-sm">
           Why Choose Us
         </p>
 
         {/* Title */}
         <h1 className="text-4xl font-bold text-gray-900 mt-4 leading-snug">
-          We Offer The <span className="text-blue-600">Best Experience</span> With Our Rental Deals
+          We Offer The <span className="text-blue-700">Best Experience</span> With Our Rental Deals
         </h1>
 
         {/* Features in Two Columns */}
         <div className="mt-8 flex flex-col gap-6 justify-conter">
           {data.map((item) => (
-            <div key={item.id} className="flex gap-3 items-start gap-4">
+            <div key={item.id} className="flex items-start gap-4">
               {/* Icon */}
               <img src={item.image} alt={item.title} className="w-10 h-10 bg-blue-100 p-2 mt-2 rounded-lg" />
 

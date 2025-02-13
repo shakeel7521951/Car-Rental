@@ -24,7 +24,7 @@ const carDeals = [
     ],
   },
   {
-    id: 1,
+    id: 2,
     name: "Audi R8",
     price: "$2100/day",
     image: Audi,
@@ -66,7 +66,7 @@ const PopularServices = () => {
     <section className="mt-16 px-6 sm:px-10 md:px-16 lg:px-24">
       {/* Header */}
       <div className="text-center">
-        <p className="bg-blue-100 text-blue-600 px-5 py-2 rounded-full inline-block font-semibold text-sm">
+        <p className="bg-blue-100 text-blue-700 px-5 py-2 rounded-full inline-block font-semibold text-sm">
           Popular Rental Deals
         </p>
         <h1 className="font-bold text-3xl sm:text-4xl text-gray-900 mt-3">
@@ -75,7 +75,7 @@ const PopularServices = () => {
       </div>
 
       {/* Car Rental Cards */}
-      <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
         {carDeals.map((car) => (
           <div
             key={car.id}
@@ -87,12 +87,12 @@ const PopularServices = () => {
             </div>
 
             {/* Car Details */}
-            <div className="p-6 flex flex-col justify-between md:w-1/2">
+            <div className="md:w-[60%] px-2 py-6 flex flex-col justify-between">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">{car.name}</h2>
 
                 {/* Features */}
-                <div className="grid grid-cols-2 gap-3 mt-3">
+                <div className="grid grid-cols-2 gap-2 mt-3">
                   {car.features.map((feature, index) => (
                     <div key={index} className="flex items-center gap-2">
                       <img src={feature.icon} alt={feature.label} className="w-6 h-6" />
@@ -111,7 +111,7 @@ const PopularServices = () => {
                 </div>
                 <Link
                   to="/"
-                  className="bg-blue-600 text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-blue-700 transition"
+                  className="bg-blue-700 text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-blue-700 transition"
                 >
                   Book Now
                 </Link>

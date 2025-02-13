@@ -7,13 +7,13 @@ const Working = () => {
   return (
     <div className="mt-16 px-6 md:px-12 lg:px-20 text-center">
       {/* Section Tagline */}
-      <p className="bg-blue-100 text-blue-600 px-4 py-2 rounded-full w-fit mx-auto font-semibold text-sm">
+      <p className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full w-fit mx-auto font-semibold text-sm">
         HOW IT WORKS
       </p>
 
       {/* Section Title */}
       <h1 className="font-bold text-4xl text-gray-900 mt-4">
-        Rent With These <span className="text-blue-600">3 Easy Steps</span>
+        Rent With These <span className="text-blue-700">3 Easy Steps</span>
       </h1>
 
       {/* Steps Container */}
