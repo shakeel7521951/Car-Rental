@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react"; // Icon for Mobile Toggle
 import logo from "/footerContent/Frame.png"; // Adjust path if needed
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <nav className="container mx-auto px-4 py-4 flex justify-between items-center relative">
       {/* Left - Logo */}
-      <div className="flex items-center gap-2">
+      <div onClick={() => navigate("/")} className="flex items-center gap-2">
         <img
           src={logo}
           style={{
