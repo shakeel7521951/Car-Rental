@@ -4,6 +4,7 @@ import logo from "../assets/footerContent/Frame.png";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
