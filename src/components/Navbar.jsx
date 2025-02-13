@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <nav className="container mx-auto px-4 py-4 flex justify-between items-center relative">
       {/* Left - Logo */}
-      <div className="flex items-center gap-2">
+      <Link to="/" className="flex items-center gap-2">
         <img
           src={logo}
           style={{
@@ -22,15 +22,15 @@ const Navbar = () => {
         <h1 className="text-[#1572D3] text-lg lg:text-xl font-bold">
           RENTCARS
         </h1>
-      </div>
+      </Link>
 
       {/* Center - Navigation Links (Hidden on Small & Medium Screens) */}
       <div className="hidden lg:flex gap-6">
         {[
-          "Become a renter",
-          "Rental deals",
-          "How it works",
-          "Why choose us",
+          "Home",
+          "Services",
+          "About Us",
+          "Contact",
         ].map((item) => (
           <Link
             key={item}
@@ -67,8 +67,8 @@ const Navbar = () => {
       {isOpen && (
         <div className="absolute top-16 z-20 left-0 w-full bg-white shadow-md flex flex-col items-center py-4 space-y-4 lg:hidden">
           {[
-            "Become a renter",
-            "Rental deals",
+            "Home",
+            "Services",
             "How it works",
             "Why choose us",
           ].map((item) => (

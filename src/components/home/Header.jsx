@@ -14,7 +14,7 @@ const Header = () => {
         <div className="w-full md:w-1/2 text-center md:text-left space-y-6">
           <h1 className="text-5xl font-bold text-gray-900 leading-tight">
             Find, Book & Rent a Car{" "}
-            <span className="text-blue-600">Easily</span>
+            <span className="text-blue-700">Easily</span>
           </h1>
           <p className="text-lg text-gray-600">
             Get a car wherever and whenever you need it with your iOS and
