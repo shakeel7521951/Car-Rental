@@ -17,9 +17,9 @@ const Download = () => {
             backgroundRepeat: "no-repeat",
           }}
         >
-          <button className="text-[#1572D3] poppins-normal w-3/4 md:w-2/3 px-6 py-3 bg-[#1572D3]/10 border border-[#1572D3] rounded-xl hover:bg-white transition">
-            DOWNLOAD
-          </button>
+          <p className="bg-blue-100 text-blue-700 px-8 py-2 rounded-full inline-block font-semibold text-sm">
+            {"Download".toUpperCase()}
+          </p>
           <h1 className="text-black poppins-semibold text-3xl md:text-5xl mt-4">
             Download Rentcars App for{" "}
             <span className="text-[#1572D3]">FREE</span>

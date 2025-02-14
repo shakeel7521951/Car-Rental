@@ -5,6 +5,8 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import ContactUs from "./pages/ContactUs";
+import About from "./pages/AboutUs";
+import Booking from "./pages/Booking";
 
 const MainLayout = () => {
   return (
@@ -22,8 +24,13 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/home", element: <Home /> },
-      { path: "/services", element: <Services /> },
+      {
+        path: "/services",
+        element: <Services />,
+      },
+      { path: "/booking/:id", element: <Booking /> },
       { path: "/contact", element: <ContactUs /> },
+      { path: "/about-us", element: <About /> },
     ],
   },
 ]);
