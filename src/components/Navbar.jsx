@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import logo from "../assets/footerContent/Frame.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -45,18 +45,17 @@ const Navbar = () => {
 
       {/* Right - Buttons (Hidden on Small & Medium Screens) */}
       <div className="hidden lg:flex gap-4">
-        <button
-          onClick={() => console.log("signup")}
+        <Link to="/sign-up"
           className="text-[#1572D3] font-bold px-6 py-2 rounded-md border border-[#1572D3] hover:bg-[#1572D3] hover:text-white transition"
         >
           Sign up
-        </button>
-        <button
-          onClick={() => console.log("login")}
+        </Link>
+        <Link
+          to="/login"
           className="text-white bg-[#1572D3] font-medium px-6 py-2 rounded-md hover:bg-[#125ca1] transition"
         >
           Login
-        </button>
+        </Link>
       </div>
 
       {/* Mobile Menu Button (Visible on Small & Medium Screens) */}

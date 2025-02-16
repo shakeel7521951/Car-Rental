@@ -5,6 +5,9 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import ContactUs from "./pages/ContactUs";
+import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Signup";
+import EmailOTPForm from "./pages/VerifyOtp";
 
 const MainLayout = () => {
   return (
@@ -26,6 +29,9 @@ const router = createBrowserRouter([
       { path: "/contact", element: <ContactUs /> },
     ],
   },
+  { path: "/login", element: <LoginPage /> },
+  { path: "/sign-up", element: <RegisterPage /> },
+  { path: "/verify-otp", element: <EmailOTPForm /> },
 ]);
 const App = () => {
   return <RouterProvider router={router} />;
