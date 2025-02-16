@@ -8,6 +8,8 @@ import ContactUs from "./pages/ContactUs";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Signup";
 import EmailOTPForm from "./pages/VerifyOtp";
+import About from "./pages/AboutUs";
+import Booking from "./pages/Booking";
 
 const MainLayout = () => {
   return (
@@ -25,8 +27,13 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/home", element: <Home /> },
-      { path: "/services", element: <Services /> },
+      {
+        path: "/services",
+        element: <Services />,
+      },
+      { path: "/booking/:id", element: <Booking /> },
       { path: "/contact", element: <ContactUs /> },
+      { path: "/about-us", element: <About /> },
     ],
   },
   { path: "/login", element: <LoginPage /> },

@@ -7,8 +7,7 @@ const Intro = () => {
         <div className="grid items-center grid-cols-1 md:grid-cols-2">
           <div>
             <h2 className="text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl lg:text-5xl">
-              Hey 👋 I am
-              <br className="block sm:hidden" />
+              Hey 👋 I am <br className="block sm:hidden" />
               Jenny Carter
             </h2>
             <p className="max-w-lg mt-3 text-xl leading-relaxed text-gray-600 dark:text-gray-300 md:mt-8">
@@ -20,7 +19,7 @@ const Intro = () => {
             <p className="mt-4 text-xl text-gray-600 dark:text-gray-300 md:mt-8">
               <span className="relative inline-block">
                 <span className="absolute inline-block w-full bottom-0.5 h-2 bg-yellow-300 dark:bg-gray-900"></span>
-                <span className="relative"> Have a question? </span>
+                <span className="relative px-1"> Have a question? </span>
               </span>
               <br className="block sm:hidden" />
               Ask me on{" "}
