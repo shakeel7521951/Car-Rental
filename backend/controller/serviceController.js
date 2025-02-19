@@ -1,0 +1,79 @@
+import Service from "../models/Service.js";
+
+export const createService = async (req, res) => {
+  try {
+    const {
+      serviceName,
+      serviceCategory,
+      price,
+      image
+    } = req.body;
+
+    const customerId = req.user?.id;
+
+    if (!customerId) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    const newService = new Service({
+      serviceName,
+      serviceCategory,
+      price,
+      image
+    });
+
+    await newService.save();
+
+    return res
+      .status(201)
+      .json({ message: "Service created successfully!", Service: newService });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+export const getAllServices = async (req, res) => {
+  try {
+    const services = await Service.find();
+
+    if (services.length === 0) {
+      return res.status(404).json({ message: "No Service found!" });
+    }
+
+    res.status(200).json({ services });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal server error.", error: error.message });
+  }
+};
+
+export const updateService = async (req, res) => {
+  try {
+    const { serviceId } = req.params;
+    const updateData = req.body;
+
+    const existingService = await Service.findById(serviceId);
+    if (!existingService) {
+      return res.status(404).json({ message: "Service not found!" });
+    }
+
+    Object.keys(updateData).forEach((key) => {
+      existingService[key] = updateData[key];
+    });
+
+    const updatedService = await existingService.save();
+
+    return res.status(200).json({
+      message: "Service updated successfully!",
+      service: updatedService,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
