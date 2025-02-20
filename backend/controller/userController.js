@@ -82,7 +82,7 @@ export const login = async (req, res) => {
     const token = user.generateToken();
     res.cookie("token", token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
 
-    res.status(200).json({ message: "Login successful" });
+    res.status(200).json({ message: "Login successful" ,user});
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }

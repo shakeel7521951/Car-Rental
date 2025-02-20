@@ -1,24 +1,39 @@
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
-import login from "../assets/AUTH/LOGIN.jpg";
+import loginImage from "../assets/AUTH/LOGIN.jpg";
+import { useLoginMutation } from "../redux/slices/UserApi";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setProfile } from "../redux/slices/UserSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
+  const [loginUser, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  // Handle input change
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value, // Dynamic field update
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = () => {
-    console.log("User Data:", formData);
-    // Backend API call for authentication
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const resp = await loginUser(formData);
+      if (resp.error) {
+        toast.error(resp.error.data?.message || "Login failed", { position: "top-center" });
+      } else {
+        toast.success(resp.data?.message || "Login successful", { position: "top-center" });
+        dispatch(setProfile(resp.data?.user));
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred", { position: "top-center" });
+    }
   };
 
   return (
@@ -66,10 +81,11 @@ export default function LoginPage() {
           </div>
 
           <button 
-            className="w-full bg-blue-600 text-white p-3 rounded-lg mt-4 font-semibold hover:bg-blue-700 transition duration-300 shadow-md"
+            className="w-full bg-blue-600 text-white p-3 rounded-lg mt-4 font-semibold hover:bg-blue-700 transition duration-300 shadow-md disabled:opacity-50"
             onClick={handleLogin}
+            disabled={isLoading}
           >
-            Sign in to your account
+            {isLoading ? "Signing in..." : "Sign in to your account"}
           </button>
 
           <div className="flex items-center my-6">
@@ -79,7 +95,10 @@ export default function LoginPage() {
           </div>
 
           {/* Google Sign-in Button */}
-          <button className="flex items-center justify-center w-full border border-gray-300 p-3 rounded-lg font-medium hover:bg-gray-100 transition duration-300">
+          <button
+            className="flex items-center justify-center w-full border border-gray-300 p-3 rounded-lg font-medium hover:bg-gray-100 transition duration-300"
+            onClick={() => toast.info("Google Sign-in coming soon!")}
+          >
             <div className="p-2 bg-red-500 rounded-full flex items-center justify-center">
               <FaGoogle className="text-white" />
             </div>
@@ -89,7 +108,7 @@ export default function LoginPage() {
 
         {/* Right Side - Image */}
         <div className="hidden md:flex w-1/2 bg-gray-50 items-center justify-center">
-          <img src={login} alt="Login Illustration" className="w-[80%] object-cover rounded-lg shadow-lg" />
+          <img src={loginImage} alt="Login Illustration" className="w-[80%] object-cover rounded-lg shadow-lg" />
         </div>
       </div>
     </div>

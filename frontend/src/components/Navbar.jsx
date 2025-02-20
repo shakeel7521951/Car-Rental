@@ -1,16 +1,31 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
-import logo from "../assets/footerContent/Frame.png";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUserProfile, clearProfile } from "../redux/slices/UserSlice";
+import logo from "../assets/footerContent/Frame.png";
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const userProfile = useSelector(selectUserProfile);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(clearProfile());
+    setDropdownOpen(false);
+    navigate("/login");
+  };
 
   return (
     <nav className="container mx-auto px-4 py-4 flex justify-between items-center relative">
       {/* Left - Logo */}
-      <Link to="/" className="flex items-center gap-2">
+      <Link
+        to="/"
+        className="flex items-center gap-2"
+        onClick={() => setIsOpen(false)}
+      >
         <img
           src={logo}
           style={{
@@ -25,73 +40,147 @@ const Navbar = () => {
         </h1>
       </Link>
 
-      {/* Center - Navigation Links (Hidden on Small & Medium Screens) */}
+      {/* Center - Navigation Links */}
       <div className="hidden lg:flex gap-6">
-        {[
-          "Home",
-          "Services",
-          "About Us",
-          "Contact",
-        ].map((item) => (
+        {["Home", "Services", "About Us", "Contact"].map((item) => (
           <Link
             key={item}
             to={`/${item.toLowerCase().replace(/ /g, "-")}`}
             className="text-black hover:text-[#1572D3] transition-colors font-medium"
+            onClick={() => setIsOpen(false)}
           >
             {item}
           </Link>
         ))}
       </div>
 
-      {/* Right - Buttons (Hidden on Small & Medium Screens) */}
+      {/* Right - User Authentication/Profile */}
       <div className="hidden lg:flex gap-4">
-        <Link to="/sign-up"
-          className="text-[#1572D3] font-bold px-6 py-2 rounded-md border border-[#1572D3] hover:bg-[#1572D3] hover:text-white transition"
-        >
-          Sign up
-        </Link>
-        <Link
-          to="/login"
-          className="text-white bg-[#1572D3] font-medium px-6 py-2 rounded-md hover:bg-[#125ca1] transition"
-        >
-          Login
-        </Link>
+        {userProfile ? (
+          <div className="relative">
+            {/* Profile Icon */}
+            <div
+              className="w-10 h-10 flex items-center justify-center bg-[#1572D3] text-white font-bold rounded-full cursor-pointer"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              {userProfile?.name?.charAt(0)?.toUpperCase() || ""}
+            </div>
+
+            {/* Dropdown Menu */}
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-30">
+                <ul className="py-2 text-gray-700">
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      navigate("/profile");
+                      setDropdownOpen(false);
+                    }}
+                  >
+                    My Profile
+                  </li>
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
+        ) : (
+          <>
+            <Link
+              to="/sign-up"
+              className="text-[#1572D3] font-bold px-6 py-2 rounded-md border border-[#1572D3] hover:bg-[#1572D3] hover:text-white transition"
+            >
+              Sign up
+            </Link>
+            <Link
+              to="/login"
+              className="text-white bg-[#1572D3] font-medium px-6 py-2 rounded-md hover:bg-[#125ca1] transition"
+            >
+              Login
+            </Link>
+          </>
+        )}
       </div>
 
-      {/* Mobile Menu Button (Visible on Small & Medium Screens) */}
+      {/* Mobile Menu Button */}
       <button className="lg:hidden p-2" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? <X size={28} /> : <Menu size={28} />}
       </button>
 
-      {/* Mobile Menu (Dropdown, Visible on Small & Medium Screens) */}
+      {/* Mobile Menu */}
       {isOpen && (
         <div className="absolute top-16 z-20 left-0 w-full bg-white shadow-md flex flex-col items-center py-4 space-y-4 lg:hidden">
-          {[
-            "Home",
-            "Services",
-            "How it works",
-            "Why choose us",
-          ].map((item) => (
+          {["Home", "Services", "About Us", "Contact"].map((item) => (
             <Link
               key={item}
               to={`/${item.toLowerCase().replace(/ /g, "-")}`}
               className="text-black hover:text-[#1572D3] transition-colors font-medium"
+              onClick={() => setIsOpen(false)}
             >
               {item}
             </Link>
           ))}
-          <button
-            onClick={() => console.log("signup")}
-            className="text-[#1572D3] font-bold px-6 py-2 rounded-md border border-[#1572D3] w-40 hover:bg-[#1572D3] hover:text-white transition"
-          >
-            Sign up
-          </button>
-          <button
-            onClick={() => console.log("login")}
-            className="text-white font-medium px-6 py-2 rounded-md bg-[#1572D3] w-40 hover:bg-[#125ca1] transition"
-          >
-            Login
-          </button>
+
+          {userProfile ? (
+            <div className="relative">
+              {/* Profile Icon */}
+              <div
+                className="w-10 h-10 flex items-center justify-center bg-[#1572D3] text-white font-bold rounded-full cursor-pointer"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                {userProfile.name.charAt(0).toUpperCase()}
+              </div>
+
+              {/* Dropdown Menu */}
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-30">
+                  <ul className="py-2 text-gray-700">
+                    <li
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                        navigate("/profile");
+                        setDropdownOpen(false);
+                        setIsOpen(false);
+                      }}
+                    >
+                      My Profile
+                    </li>
+                    <li
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                        handleLogout();
+                        setIsOpen(false);
+                      }}
+                    >
+                      Logout
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <Link
+                to="/sign-up"
+                className="text-[#1572D3] font-bold px-6 py-2 rounded-md border border-[#1572D3] w-40 hover:bg-[#1572D3] hover:text-white transition"
+                onClick={() => setIsOpen(false)}
+              >
+                Sign up
+              </Link>
+              <Link
+                to="/login"
+                className="text-white font-medium px-6 py-2 rounded-md bg-[#1572D3] w-40 hover:bg-[#125ca1] transition"
+                onClick={() => setIsOpen(false)}
+              >
+                Login
+              </Link>
+            </>
+          )}
         </div>
       )}
     </nav>
