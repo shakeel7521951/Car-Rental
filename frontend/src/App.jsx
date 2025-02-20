@@ -11,6 +11,7 @@ import EmailOTPForm from "./pages/VerifyOtp";
 import About from "./pages/AboutUs";
 import Booking from "./pages/Booking";
 import VerifyUser from "./pages/VerifyUser";
+import MyProfile from "./pages/MyProfile";
 
 const MainLayout = () => {
   return (
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
       { path: "/booking/:id", element: <Booking /> },
       { path: "/contact", element: <ContactUs /> },
       { path: "/about-us", element: <About /> },
+      { path: "/my-profile", element: <MyProfile /> },
     ],
   },
   { path: "/login", element: <LoginPage /> },

@@ -33,7 +33,6 @@ export default function RegisterPage() {
       toast.error(response.error.data?.message || "Registration failed!", {
         position: "top-center",
       });
-      console.log(response.error);
     } else {
       toast.success(response.data?.message || "Registration successful!", {
         position: "top-center",

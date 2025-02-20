@@ -4,15 +4,29 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUserProfile, clearProfile } from "../redux/slices/UserSlice";
 import logo from "../assets/footerContent/Frame.png";
+import { useLogoutMutation } from "../redux/slices/UserApi";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const userProfile = useSelector(selectUserProfile);
+  const [logout] = useLogoutMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    const response = await logout();
+    if (response.error) {
+      toast.error(response.error.data?.message || "Registration failed!", {
+        position: "top-center",
+      });
+    } else {
+      toast.success(response.data?.message || "Registration successful!", {
+        position: "top-center",
+      });
+    }
     dispatch(clearProfile());
     setDropdownOpen(false);
     navigate("/login");
@@ -73,7 +87,7 @@ const Navbar = () => {
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
-                      navigate("/profile");
+                      navigate("/my-profile");
                       setDropdownOpen(false);
                     }}
                   >
@@ -143,7 +157,7 @@ const Navbar = () => {
                     <li
                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                       onClick={() => {
-                        navigate("/profile");
+                        navigate("/my-profile");
                         setDropdownOpen(false);
                         setIsOpen(false);
                       }}

@@ -31,6 +31,22 @@ export const userApi = createApi({
       }),
     }),
 
+    logout: builder.mutation({
+      query: () => ({
+        url: "/logout",
+        method: "POST",
+      }),
+    }),
+
+    profile: builder.query({
+      query: () => ({
+        url: "/my-profile",
+        method: "GET",
+        credentials: "include", // Ensure cookies are sent
+      }),
+    }),
+      
+
     verifyUser: builder.mutation({
       query: ({ otp, email }) => ({
         url: "/verify-user",
@@ -41,4 +57,10 @@ export const userApi = createApi({
   }),
 });
 
-export const { useUserRegistrationMutation, useVerifyUserMutation, useLoginMutation } = userApi;
+export const {
+  useUserRegistrationMutation,
+  useVerifyUserMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useProfileQuery,
+} = userApi;
