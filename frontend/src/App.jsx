@@ -14,6 +14,13 @@ import VerifyUser from "./pages/VerifyUser";
 import MyProfile from "./pages/MyProfile";
 import UpdatePassword from "./pages/UpdatePassword";
 
+import Sidebar from "./components/dashboard/common/Sidebar";
+import OverviewPage from "./pages/dashboard/OverviewPage";
+// import ProductsPage from "./pages/dashboard/ProductsPage";
+// import UsersPage from "./pages/dashboard/UsersPage";
+// import SalesPage from "./pages/dashboard/SalesPage";
+// import OrdersPage from "./pages/dashboard/OrdersPage";
+
 const MainLayout = () => {
   return (
     <>
@@ -24,16 +31,22 @@ const MainLayout = () => {
   );
 };
 
+const AdminLayout = () => {
+  return (
+    <>
+      <Sidebar />
+      <Outlet />
+    </>
+  );
+};
+
 const router = createBrowserRouter([
   {
     element: <MainLayout />,
     children: [
       { path: "/", element: <Home /> },
       { path: "/home", element: <Home /> },
-      {
-        path: "/services",
-        element: <Services />,
-      },
+      { path: "/services", element: <Services /> },
       { path: "/booking/:id", element: <Booking /> },
       { path: "/contact", element: <ContactUs /> },
       { path: "/about-us", element: <About /> },
@@ -45,6 +58,16 @@ const router = createBrowserRouter([
   { path: "/sign-up", element: <RegisterPage /> },
   { path: "/verify-otp", element: <EmailOTPForm /> },
   { path: "/user-verification", element: <VerifyUser /> },
+  {
+    element: <AdminLayout />,
+    children: [
+      { path: "/dashboard", element: <OverviewPage /> },
+      // { path: "/products", element: <ProductsPage /> },
+      // { path: "/users", element: <UsersPage /> },
+      // { path: "/sales", element: <SalesPage /> },
+      // { path: "/orders", element: <OrdersPage /> },
+    ],
+  },
 ]);
 const App = () => {
   return <RouterProvider router={router} />;
