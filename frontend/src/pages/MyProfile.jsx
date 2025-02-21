@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import { useProfileQuery } from "../redux/slices/UserApi";
+import {
+  useProfileQuery,
+  useUpdateProfileMutation,
+} from "../redux/slices/UserApi";
 import { clearProfile, setProfile } from "../redux/slices/UserSlice";
 
 const MyProfile = () => {
@@ -10,6 +13,7 @@ const MyProfile = () => {
   const navigate = useNavigate();
   const { data: profileData, isLoading, error } = useProfileQuery();
   const [selectedImage, setSelectedImage] = useState(null);
+  const [updateProfile] = useUpdateProfileMutation();
 
   useEffect(() => {
     if (profileData?.user) {
@@ -19,38 +23,50 @@ const MyProfile = () => {
 
   const profile = useSelector((state) => state.user.profile);
 
-  const handleImageChange = async (e) => {
-    const profilePic = e.target.files[0];
-    if (profilePic) {
-      const formData = new FormData();
-      formData.append("profilePic", profilePic);
-
-      try {
-        const response = await updateProfile(formData).unwrap();
-        dispatch(setProfile(response?.user));
-        setSelectedImage(URL.createObjectURL(profilePic));
-        toast.success("Profile image updated!", { position: "top-center" });
-      } catch (error) {
-        toast.error(error.message || "Failed to update image.", {
-          position: "top-center",
-        });
-      }
-    }
-  };
-
   const handleDeleteProfile = async () => {
     try {
       dispatch(clearProfile());
       navigate("/");
-      toast.success("Profile deleted successfully!", { position: "top-center" });
+      toast.success("Profile deleted successfully!", {
+        position: "top-center",
+      });
     } catch (error) {
       toast.error("Failed to delete profile.", { position: "top-center" });
     }
   };
 
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("profilePic", file);
+
+    try {
+        const resp = await updateProfile(formData);  // ✅ Send FormData directly
+        console.log(resp);
+
+        if (resp.error) {
+            toast.error(resp.error.data?.message || "Failed to update profile picture");
+        } else {
+            toast.success(resp.data?.message || "Profile picture updated successfully");
+            dispatch(setProfile(resp.data?.user));
+        }
+    } catch (error) {
+        toast.error("An error occurred while updating profile picture");
+    }
+};
+
+
   if (isLoading) return <div className="text-center mt-10">Loading...</div>;
-  if (error) return <div className="text-center mt-10 text-red-500">Error loading profile</div>;
-  if (!profile) return <div className="text-center mt-10">No profile found</div>;
+  if (error)
+    return (
+      <div className="text-center mt-10 text-red-500">
+        Error loading profile
+      </div>
+    );
+  if (!profile)
+    return <div className="text-center mt-10">No profile found</div>;
 
   const userInitial = profile?.name?.charAt(0).toUpperCase() || "U";
 
@@ -62,9 +78,17 @@ const MyProfile = () => {
           onClick={() => document.getElementById("imageInput").click()}
         >
           {selectedImage ? (
-            <img src={selectedImage} alt="Profile" className="w-full h-full object-cover" />
-          ) : profile.profilePic?.url ? (
-            <img src={profile.profilePic?.url} alt="Profile" className="w-full h-full object-cover" />
+            <img
+              src={selectedImage}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          ) : profile.profilePic ? (
+            <img
+              src={profile.profilePic}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
           ) : (
             userInitial
           )}
@@ -73,9 +97,16 @@ const MyProfile = () => {
           </div>
         </div>
 
-        <input id="imageInput" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+        <input
+          id="imageInput"
+          type="file"
+          onChange={handleImageChange}
+          className="hidden"
+        />
 
-        <p className="text-2xl font-bold mt-4 text-blue-600">Hello, {profile.name}</p>
+        <p className="text-2xl font-bold mt-4 text-blue-600">
+          Hello, {profile.name}
+        </p>
         <p className="text-lg font-medium text-gray-700">{profile.email}</p>
         <p className="text-sm text-gray-500">Role: {profile.role}</p>
 

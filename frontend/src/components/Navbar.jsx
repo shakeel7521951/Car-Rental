@@ -74,10 +74,20 @@ const Navbar = () => {
           <div className="relative">
             {/* Profile Icon */}
             <div
-              className="w-10 h-10 flex items-center justify-center bg-[#1572D3] text-white font-bold rounded-full cursor-pointer"
+              className="w-10 h-10 flex items-center justify-center bg-[#1572D3] text-white font-bold rounded-full cursor-pointer overflow-hidden border-2 border-white hover:opacity-90 transition"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
-              {userProfile?.name?.charAt(0)?.toUpperCase() || ""}
+              {userProfile.profilePic ? (
+                <img
+                  src={userProfile.profilePic}
+                  alt="User Avatar"
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                <span className="text-lg">
+                  {userProfile.name.charAt(0).toUpperCase()}
+                </span>
+              )}
             </div>
 
             {/* Dropdown Menu */}
@@ -147,7 +157,14 @@ const Navbar = () => {
                 className="w-10 h-10 flex items-center justify-center bg-[#1572D3] text-white font-bold rounded-full cursor-pointer"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
-                {userProfile.name.charAt(0).toUpperCase()}
+                <img
+                  src={
+                    userProfile.profilePic
+                      ? userProfile.profilePic
+                      : `https://ui-avatars.com/api/?name=${userProfile.name}`
+                  }
+                  alt="User Avatar"
+                />
               </div>
 
               {/* Dropdown Menu */}

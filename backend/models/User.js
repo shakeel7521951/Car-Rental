@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    profilePic: { type: String },
     role: { type: String, default: "User" },
     status: { type: String, default: "unverified" },
     otp: { type: String },
@@ -59,7 +60,7 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
 // Generate JWT Token
 userSchema.methods.generateToken = function () {
   return jwt.sign(
-    { id: this._id,name:this.name ,email: this.email, role: this.role },
+    { id: this._id,name:this.name ,email: this.email, role: this.role,profilePic:this.profilePic },
     process.env.JWT_SECRET,
     { expiresIn: "1h" }
   );

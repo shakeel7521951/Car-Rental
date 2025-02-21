@@ -12,6 +12,7 @@ import About from "./pages/AboutUs";
 import Booking from "./pages/Booking";
 import VerifyUser from "./pages/VerifyUser";
 import MyProfile from "./pages/MyProfile";
+import UpdatePassword from "./pages/UpdatePassword";
 
 const MainLayout = () => {
   return (
@@ -37,12 +38,13 @@ const router = createBrowserRouter([
       { path: "/contact", element: <ContactUs /> },
       { path: "/about-us", element: <About /> },
       { path: "/my-profile", element: <MyProfile /> },
+      { path: "/update-password", element: <UpdatePassword /> },
     ],
   },
   { path: "/login", element: <LoginPage /> },
   { path: "/sign-up", element: <RegisterPage /> },
   { path: "/verify-otp", element: <EmailOTPForm /> },
-  { path: "/user-verification", element:<VerifyUser /> },
+  { path: "/user-verification", element: <VerifyUser /> },
 ]);
 const App = () => {
   return <RouterProvider router={router} />;

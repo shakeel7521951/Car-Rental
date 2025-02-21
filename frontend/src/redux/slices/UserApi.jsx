@@ -38,11 +38,29 @@ export const userApi = createApi({
       }),
     }),
 
+    updatePassword: builder.mutation({
+      query: (userData) => ({
+        url: "/update-password",
+        method: "PUT",
+        body:userData,
+        credentials: "include",
+      }),
+    }),
+
+    updateProfile: builder.mutation({
+      query: (formData) => ({
+        url: "/update-profile",
+        method: "PUT",
+        body: formData,
+        credentials: "include",
+      }),
+    }),
+
     profile: builder.query({
       query: () => ({
         url: "/my-profile",
         method: "GET",
-        credentials: "include", // Ensure cookies are sent
+        credentials: "include",
       }),
     }),
       
@@ -63,4 +81,6 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useProfileQuery,
+  useUpdatePasswordMutation,
+  useUpdateProfileMutation
 } = userApi;

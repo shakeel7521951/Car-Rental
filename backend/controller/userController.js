@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import sendMail from "../utils/SendMail.js";
+import cloudinary from 'cloudinary';
 
 export const register = async (req, res) => {
   try {
@@ -108,9 +109,9 @@ export const myProfile = async (req, res) => {
 
 export const updatePassword = async (req, res, next) => {
   try {
-    const { oldPassword, newPassword, confirmPassword } = req.body;
+    const { currentPassword, newPassword, confirmPassword } = req.body;
 
-    if (!oldPassword || !newPassword || !confirmPassword) {
+    if (!currentPassword || !newPassword || !confirmPassword) {
       return next(new errorHandler("All fields are required", 400));
     }
 
@@ -119,12 +120,12 @@ export const updatePassword = async (req, res, next) => {
       return res.status(400).json("User not found!");
     }
 
-    const isMatch = await user.comparePassword(oldPassword);
+    const isMatch = await user.comparePassword(currentPassword);
     if (!isMatch) {
       return res.status(403).json("Old password is incorrect!");
     }
 
-    if(oldPassword === newPassword){
+    if(currentPassword === newPassword){
         return res.status(401).json({message:"Old and New Password could not be same"})
     }
 
@@ -140,6 +141,36 @@ export const updatePassword = async (req, res, next) => {
       message: "Password updated successfully",
     });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error! Please try again later" });
   }
 };
+
+export const updateProfile = async (req, res) => {
+  try {
+    console.log("Received File:", req.file);
+
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized request" });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // ✅ Get the uploaded file URL from Cloudinary
+    const profilePicUrl = req.file?.path || user.profilePic;
+
+    // ✅ Update the user's profile picture
+    user.profilePic = profilePicUrl;
+    await user.save();
+
+    return res.status(200).json({ message: "Profile updated successfully", user });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+
