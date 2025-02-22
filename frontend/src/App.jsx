@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
@@ -20,6 +20,10 @@ import ProductsPage from "./pages/dashboard/ProductsPage";
 import UsersPage from "./pages/dashboard/UsersPage";
 import SalesPage from "./pages/dashboard/SalesPage";
 import OrdersPage from "./pages/dashboard/OrdersPage";
+import { useDispatch } from "react-redux";
+import { useProfileQuery } from "./redux/slices/UserApi";
+import { clearProfile, setProfile } from "./redux/slices/UserSlice";
+import AdminRoute from "./middleWares/AdminRoute";
 
 const MainLayout = () => {
   return (
@@ -34,8 +38,14 @@ const MainLayout = () => {
 const AdminLayout = () => {
   return (
     <>
-      <Sidebar />
-      <Outlet />
+      <div className="flex h-screen  text-blue-700 overflow-hidden">
+        <div className="fixed inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-br bg-white text-blue-700" />
+          <div className="absolute inset-0 backdrop-blur-sm" />
+        </div>
+        <Sidebar />
+        <Outlet />
+      </div>
     </>
   );
 };
@@ -59,17 +69,33 @@ const router = createBrowserRouter([
   { path: "/verify-otp", element: <EmailOTPForm /> },
   { path: "/user-verification", element: <VerifyUser /> },
   {
-    element: <AdminLayout />,
+    element: <AdminRoute />,
     children: [
-      { path: "/dashboard", element: <OverviewPage /> },
-      { path: "/products", element: <ProductsPage /> },
-      { path: "/users", element: <UsersPage /> },
-      { path: "/sales", element: <SalesPage /> },
-      { path: "/orders", element: <OrdersPage /> },
+      {
+        element: <AdminLayout />,
+        children: [
+          { path: "/dashboard", element: <OverviewPage /> },
+          { path: "/products", element: <ProductsPage /> },
+          { path: "/users", element: <UsersPage /> },
+          { path: "/sales", element: <SalesPage /> },
+          { path: "/orders", element: <OrdersPage /> },
+        ],
+      },
     ],
   },
 ]);
 const App = () => {
+  const dispatch = useDispatch();
+  const { data: profileData } = useProfileQuery();
+
+  useEffect(() => {
+    if (profileData) {
+      dispatch(setProfile(profileData.user));
+    } else {
+      dispatch(clearProfile());
+    }
+  }, [profileData, dispatch]);
+
   return <RouterProvider router={router} />;
 };
 

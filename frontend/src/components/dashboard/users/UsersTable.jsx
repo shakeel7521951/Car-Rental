@@ -1,49 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Search, ChevronDown } from "lucide-react";
-
-const userData = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "Customer",
-    status: "Active",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com",
-    role: "Admin",
-    status: "Active",
-  },
-  {
-    id: 3,
-    name: "Bob Johnson",
-    email: "bob@example.com",
-    role: "Customer",
-    status: "Inactive",
-  },
-  {
-    id: 4,
-    name: "Alice Brown",
-    email: "alice@example.com",
-    role: "Customer",
-    status: "Active",
-  },
-  {
-    id: 5,
-    name: "Charlie Wilson",
-    email: "charlie@example.com",
-    role: "Moderator",
-    status: "Active",
-  },
-];
+import {
+  useAllUsersQuery,
+  useUpdateUserRoleMutation,
+} from "../../../redux/slices/UserApi";
+import { toast } from "react-toastify";
 
 const UsersTable = () => {
+  const { data, isLoading, error } = useAllUsersQuery();
+  const [updateUserRole] = useUpdateUserRoleMutation();
+  const [userData, setUserData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredUsers, setFilteredUsers] = useState(userData);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.message, { position: "top-center" });
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (data) {
+      setUserData(data);
+      setFilteredUsers(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setFilteredUsers(userData);
+  }, [userData]);
 
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
@@ -61,14 +48,23 @@ const UsersTable = () => {
     setOpenDropdown(openDropdown === id ? null : id);
   };
 
-  const changeUserRole = (id, newRole) => {
-    setFilteredUsers(
-      filteredUsers.map((user) =>
-        user.id === id ? { ...user, role: newRole } : user
-      )
-    );
+  const changeUserRole = async (id, newRole) => {
+    try {
+      const res = await updateUserRole({ userId: id, role: newRole }).unwrap();
+      toast.success(res.message,{position:'top-center'});
+
+      setFilteredUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user._id === id ? { ...user, role: newRole } : user
+        )
+      );
+    } catch (err) {
+      toast.error(err?.data?.message || "Failed to update user role");
+    }
     setOpenDropdown(null);
   };
+
+  if (isLoading) return <p>Loading users...</p>;
 
   return (
     <motion.div
@@ -110,7 +106,7 @@ const UsersTable = () => {
           <tbody className="divide-y divide-gray-700">
             {filteredUsers.map((user) => (
               <motion.tr
-                key={user.id}
+                key={user._id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
@@ -118,8 +114,16 @@ const UsersTable = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 h-10 w-10">
-                      <div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-semibold">
-                        {user.name.charAt(0)}
+                      <div className="h-10 w-10 rounded-full flex items-center justify-center bg-gray-300 text-blue-700 font-bold">
+                        {user.profilePic ? (
+                          <img
+                            src={user.profilePic}
+                            alt={user.name}
+                            className="h-10 w-10 rounded-full"
+                          />
+                        ) : (
+                          user.name.charAt(0).toUpperCase()
+                        )}
                       </div>
                     </div>
                     <div className="ml-4">
@@ -143,7 +147,7 @@ const UsersTable = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      user.status === "Active"
+                      user.status === "verified"
                         ? "bg-green-800 text-green-100"
                         : "bg-red-800 text-red-100"
                     }`}
@@ -154,25 +158,25 @@ const UsersTable = () => {
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 relative">
                   <button
-                    onClick={() => toggleDropdown(user.id)}
+                    onClick={() => toggleDropdown(user._id)}
                     className="flex items-center text-indigo-600 hover:text-indigo-300"
                   >
                     Manage <ChevronDown className="ml-1" size={16} />
                   </button>
 
-                  {openDropdown === user.id && (
+                  {openDropdown === user._id && (
                     <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-30">
                       <button
                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => changeUserRole(user.id, "Admin")}
+                        onClick={() => changeUserRole(user._id, "Admin")}
                       >
                         Make Admin
                       </button>
                       <button
                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => changeUserRole(user.id, "Customer")}
+                        onClick={() => changeUserRole(user._id, "User")}
                       >
-                        Make Customer
+                        Make User
                       </button>
                     </div>
                   )}

@@ -42,7 +42,7 @@ export const userApi = createApi({
       query: (userData) => ({
         url: "/update-password",
         method: "PUT",
-        body:userData,
+        body: userData,
         credentials: "include",
       }),
     }),
@@ -63,7 +63,23 @@ export const userApi = createApi({
         credentials: "include",
       }),
     }),
-      
+
+    allUsers: builder.query({
+      query: () => ({
+        url:'/all-users',
+        method:"GET",
+        credentials:"include"
+      }),
+    }),
+
+    updateUserRole:builder.mutation({
+      query:({userId,role})=>({
+        url:"/update-user-role",
+        method:'PUT',
+        body:{userId,role},
+        credentials:'include'
+      })
+    }),
 
     verifyUser: builder.mutation({
       query: ({ otp, email }) => ({
@@ -82,5 +98,7 @@ export const {
   useLogoutMutation,
   useProfileQuery,
   useUpdatePasswordMutation,
-  useUpdateProfileMutation
+  useUpdateProfileMutation,
+  useAllUsersQuery,
+  useUpdateUserRoleMutation
 } = userApi;

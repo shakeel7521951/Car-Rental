@@ -39,24 +39,29 @@ const MyProfile = () => {
     const file = event.target.files[0];
     if (!file) return;
 
+    setSelectedImage(URL.createObjectURL(file));
+
     const formData = new FormData();
     formData.append("profilePic", file);
 
     try {
-        const resp = await updateProfile(formData);  // ✅ Send FormData directly
-        console.log(resp);
+      const resp = await updateProfile(formData);
+      console.log(resp);
 
-        if (resp.error) {
-            toast.error(resp.error.data?.message || "Failed to update profile picture");
-        } else {
-            toast.success(resp.data?.message || "Profile picture updated successfully");
-            dispatch(setProfile(resp.data?.user));
-        }
+      if (resp.error) {
+        toast.error(
+          resp.error.data?.message || "Failed to update profile picture"
+        );
+      } else {
+        toast.success(
+          resp.data?.message || "Profile picture updated successfully"
+        );
+        dispatch(setProfile(resp.data?.user));
+      }
     } catch (error) {
-        toast.error("An error occurred while updating profile picture");
+      toast.error("An error occurred while updating profile picture");
     }
-};
-
+  };
 
   if (isLoading) return <div className="text-center mt-10">Loading...</div>;
   if (error)

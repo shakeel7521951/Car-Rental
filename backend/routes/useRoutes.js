@@ -1,11 +1,13 @@
 import express from "express";
 import {
+  allUsers,
   login,
   logout,
   myProfile,
   register,
   updatePassword,
   updateProfile,
+  updateUserRole,
   verifyUser,
 } from "../controller/userController.js";
 import auth from "../middlewares/AuthMiddleWare.js";
@@ -18,6 +20,8 @@ router.post("/verify-user", verifyUser);
 router.post("/logout", auth, logout);
 router.get("/my-profile", auth, myProfile);
 router.put("/update-password", auth, updatePassword);
+router.get("/all-users",auth,allUsers);
+router.put("/update-user-role",auth,updateUserRole);
 router.put("/update-profile", auth,upload.single("profilePic"), updateProfile);
 
 export default router;

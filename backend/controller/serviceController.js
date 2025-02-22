@@ -6,8 +6,8 @@ export const createService = async (req, res) => {
       serviceName,
       serviceCategory,
       price,
-      image
     } = req.body;
+    const image = req.files;
 
     const customerId = req.user?.id;
 

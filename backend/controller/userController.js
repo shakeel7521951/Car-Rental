@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 import sendMail from "../utils/SendMail.js";
-import cloudinary from 'cloudinary';
+import cloudinary from "cloudinary";
 
 export const register = async (req, res) => {
   try {
@@ -83,7 +83,7 @@ export const login = async (req, res) => {
     const token = user.generateToken();
     res.cookie("token", token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
 
-    res.status(200).json({ message: "Login successful" ,user});
+    res.status(200).json({ message: "Login successful", user });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -125,8 +125,10 @@ export const updatePassword = async (req, res, next) => {
       return res.status(403).json("Old password is incorrect!");
     }
 
-    if(currentPassword === newPassword){
-        return res.status(401).json({message:"Old and New Password could not be same"})
+    if (currentPassword === newPassword) {
+      return res
+        .status(401)
+        .json({ message: "Old and New Password could not be same" });
     }
 
     if (newPassword !== confirmPassword) {
@@ -141,14 +143,14 @@ export const updatePassword = async (req, res, next) => {
       message: "Password updated successfully",
     });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error! Please try again later" });
+    res
+      .status(500)
+      .json({ message: "Internal server error! Please try again later" });
   }
 };
 
 export const updateProfile = async (req, res) => {
   try {
-    console.log("Received File:", req.file);
-
     if (!req.user) {
       return res.status(401).json({ message: "Unauthorized request" });
     }
@@ -158,19 +160,65 @@ export const updateProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // ✅ Get the uploaded file URL from Cloudinary
     const profilePicUrl = req.file?.path || user.profilePic;
 
-    // ✅ Update the user's profile picture
     user.profilePic = profilePicUrl;
     await user.save();
 
-    return res.status(200).json({ message: "Profile updated successfully", user });
+    return res
+      .status(200)
+      .json({ message: "Profile updated successfully", user });
   } catch (error) {
-    console.error("Error updating profile:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
 
+export const allUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    if (!users) {
+      res.status(404).json({ message: "NO User Found!" });
+    }
+    res.status(200).json(users);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal server error.Please try again later" });
+  }
+};
 
+export const updateUserRole = async (req, res) => {
+  try {
+    const { userId, role } = req.body;
 
+    if (!userId || !role) {
+      return res
+        .status(400)
+        .json({ message: "User ID and role are required." });
+    }
+
+    const updateUserRole = await User.findByIdAndUpdate(
+      userId,
+      { role },
+      { new: true }
+    );
+
+    if (!updateUserRole) {
+      return res
+        .status(400)
+        .json({ message: "Something went wrong. Please try again later." });
+    }
+
+    res
+      .status(200)
+      .json({
+        message: "User role updated successfully",
+        user: updateUserRole,
+      });
+  } catch (error) {
+    console.error("Error updating user role:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+};
