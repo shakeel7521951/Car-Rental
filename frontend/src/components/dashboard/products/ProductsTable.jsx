@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Edit, Search, Trash2 } from "lucide-react";
 import { useState } from "react";
-import AlertDialog from "../alert/AlertDialog";
+import AlertDialog from '../alert/AlertDialog';
 import Update from "../popup/Update";
 import AddProduct from "../popup/Add";
 

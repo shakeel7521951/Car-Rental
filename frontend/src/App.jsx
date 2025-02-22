@@ -16,10 +16,10 @@ import UpdatePassword from "./pages/UpdatePassword";
 
 import Sidebar from "./components/dashboard/common/Sidebar";
 import OverviewPage from "./pages/dashboard/OverviewPage";
-// import ProductsPage from "./pages/dashboard/ProductsPage";
-// import UsersPage from "./pages/dashboard/UsersPage";
-// import SalesPage from "./pages/dashboard/SalesPage";
-// import OrdersPage from "./pages/dashboard/OrdersPage";
+import ProductsPage from "./pages/dashboard/ProductsPage";
+import UsersPage from "./pages/dashboard/UsersPage";
+import SalesPage from "./pages/dashboard/SalesPage";
+import OrdersPage from "./pages/dashboard/OrdersPage";
 
 const MainLayout = () => {
   return (
@@ -62,10 +62,10 @@ const router = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       { path: "/dashboard", element: <OverviewPage /> },
-      // { path: "/products", element: <ProductsPage /> },
-      // { path: "/users", element: <UsersPage /> },
-      // { path: "/sales", element: <SalesPage /> },
-      // { path: "/orders", element: <OrdersPage /> },
+      { path: "/products", element: <ProductsPage /> },
+      { path: "/users", element: <UsersPage /> },
+      { path: "/sales", element: <SalesPage /> },
+      { path: "/orders", element: <OrdersPage /> },
     ],
   },
 ]);

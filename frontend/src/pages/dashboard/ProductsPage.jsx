@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import Header from "../components/common/Header";
-import StatCard from "../components/common/StatCard";
+import Header from "../../components/dashboard/common/Header";
+import StatCard from "../../components/dashboard/common/StatCard";
 import { AlertTriangle, Car, DollarSign, TrendingUp } from "lucide-react";
-import CategoryDistributionChart from "../components/overview/CategoryDistributionChart";
-import SalesTrendChart from "../components/products/SalesTrendChart";
-import ProductsTable from "../components/products/ProductsTable";
+import CategoryDistributionChart from "../../components/dashboard/overview/CategoryDistributionChart";
+import SalesTrendChart from '../../components/dashboard/products/SalesTrendChart';
+import ProductsTable from '../../components/dashboard/products/ProductsTable';
+
 const ProductsPage = () => {
   return (
     <div className="flex-1 overflow-auto relative z-10">
