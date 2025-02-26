@@ -2,24 +2,26 @@ import Service from "../models/Service.js";
 
 export const createService = async (req, res) => {
   try {
-    const {
-      serviceName,
-      serviceCategory,
-      price,
-    } = req.body;
-    const image = req.files;
+    const { serviceName, serviceCategory, price, passengers, doors } = req.body;
 
     const customerId = req.user?.id;
-
     if (!customerId) {
       return res.status(404).json({ message: "User not found!" });
     }
+
+    if (!req.file) {
+      return res.status(400).json({ message: "Image upload is required!" });
+    }
+
+    const imageUrl = req.file.path;
 
     const newService = new Service({
       serviceName,
       serviceCategory,
       price,
-      image
+      passengers,
+      doors,
+      servicePic: imageUrl,
     });
 
     await newService.save();
@@ -39,7 +41,7 @@ export const getAllServices = async (req, res) => {
     const services = await Service.find();
 
     if (services.length === 0) {
-      return res.status(404).json({ message: "No Service found!" });
+      return res.status(200).json({ message: "No Service found!" });
     }
 
     res.status(200).json({ services });
@@ -49,6 +51,22 @@ export const getAllServices = async (req, res) => {
       .json({ message: "Internal server error.", error: error.message });
   }
 };
+
+export const deleteService = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedService = await Service.findByIdAndDelete(id);
+
+    if (!deletedService) {
+      return res.status(404).json({ message: "Service not found!" });
+    }
+
+    res.status(200).json({ message: "Service Deleted Successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error! Please try again later" });
+  }
+};
+
 
 export const updateService = async (req, res) => {
   try {

@@ -4,12 +4,11 @@ import blueShadow from "../../assets/home/blueShadow.png";
 import googlePlay from "../../assets/home/googlePlay.png";
 import appStore from "../../assets/home/appStore.png";
 import { Link } from "react-router-dom";
-import location from '../../assets/home/location.png';
 
 const Header = () => {
   return (
     <div>
-      <div className="bg-[#FFFFFF] min-h-screen flex flex-col md:flex-row items-center justify-center w-full overflow-hidden px-6 md:px-12 lg:px-20 sm:gap-20">
+      <div className="bg-[#FFFFFF] my-4 sm:my-24 flex flex-col md:flex-row items-center justify-center w-full overflow-hidden px-6 md:px-12 lg:px-20 sm:gap-20">
         {/* Left Content */}
         <div className="w-full md:w-1/2 text-center md:text-left space-y-6">
           <h1 className="text-5xl font-bold text-gray-900 leading-tight">

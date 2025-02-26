@@ -16,7 +16,15 @@ const serviceSchema = new mongoose.Schema(
       type:Number,
       required:true
     },
-    image:{
+    passengers:{
+      type:Number,
+      required:true
+    },
+    doors:{
+      type:Number,
+      required:true
+    },
+    servicePic:{
       type:String,
       required:true
     }

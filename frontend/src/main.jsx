@@ -7,10 +7,12 @@ import { store } from "./redux/store.jsx";
 import { ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")).render(
+  <div className="max-w-[1280px] mx-auto">
   <StrictMode>
     <Provider store={store}>
       <App />
       <ToastContainer />
     </Provider>
   </StrictMode>
+  </div>
 );

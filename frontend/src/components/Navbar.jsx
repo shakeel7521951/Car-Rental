@@ -34,20 +34,25 @@ const Navbar = () => {
 
   return (
     <nav className="container mx-auto px-4 py-4 flex justify-between items-center relative">
-      {/* Left - Logo */}
-      <Link to="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
+      <Link
+        to="/"
+        className="flex items-center gap-2"
+        onClick={() => setIsOpen(false)}
+      >
         <img
           src={logo}
           style={{
-            filter: "brightness(0) saturate(100%) invert(31%) sepia(89%) saturate(714%) hue-rotate(194deg) brightness(96%) contrast(97%)",
+            filter:
+              "brightness(0) saturate(100%) invert(31%) sepia(89%) saturate(714%) hue-rotate(194deg) brightness(96%) contrast(97%)",
           }}
           className="w-10 h-10"
           alt="Logo"
         />
-        <h1 className="text-[#1572D3] text-lg lg:text-xl font-bold">RENTCARS</h1>
+        <h1 className="text-[#1572D3] text-lg lg:text-xl font-bold">
+          RENTCARS
+        </h1>
       </Link>
 
-      {/* Center - Navigation Links */}
       <div className="hidden lg:flex gap-6">
         {["Home", "Services", "About Us", "Contact"].map((item) => (
           <Link
@@ -61,7 +66,6 @@ const Navbar = () => {
         ))}
       </div>
 
-      {/* Right - User Authentication/Profile */}
       <div className="hidden lg:flex gap-4">
         {userProfile ? (
           <div className="relative">
@@ -71,9 +75,15 @@ const Navbar = () => {
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
               {userProfile.profilePic ? (
-                <img src={userProfile.profilePic} alt="User Avatar" className="w-full h-full object-cover rounded-full" />
+                <img
+                  src={userProfile.profilePic}
+                  alt="User Avatar"
+                  className="w-full h-full object-cover rounded-full"
+                />
               ) : (
-                <span className="text-lg">{userProfile.name.charAt(0).toUpperCase()}</span>
+                <span className="text-lg">
+                  {userProfile.name.charAt(0).toUpperCase()}
+                </span>
               )}
             </div>
 
@@ -81,10 +91,31 @@ const Navbar = () => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-30">
                 <ul className="py-2 text-gray-700">
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => navigate("/dashboard")}>
+                  {userProfile.role === "Admin" && (
+                    <li
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                        navigate("/dashboard");
+                        setDropdownOpen(false);
+                      }}
+                    >
+                      Dashboard
+                    </li>
+                  )}
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      navigate("/my-profile");
+                      setDropdownOpen(false);
+                    }}
+                  >
                     My Profile
                   </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleLogout}>
+
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={handleLogout}
+                  >
                     Logout
                   </li>
                 </ul>
@@ -93,10 +124,16 @@ const Navbar = () => {
           </div>
         ) : (
           <>
-            <Link to="/sign-up" className="text-[#1572D3] font-bold px-6 py-2 rounded-md border border-[#1572D3] hover:bg-[#1572D3] hover:text-white transition">
+            <Link
+              to="/sign-up"
+              className="text-[#1572D3] font-bold px-6 py-2 rounded-md border border-[#1572D3] hover:bg-[#1572D3] hover:text-white transition"
+            >
               Sign up
             </Link>
-            <Link to="/login" className="text-white bg-[#1572D3] font-medium px-6 py-2 rounded-md hover:bg-[#125ca1] transition">
+            <Link
+              to="/login"
+              className="text-white bg-[#1572D3] font-medium px-6 py-2 rounded-md hover:bg-[#125ca1] transition"
+            >
               Login
             </Link>
           </>
@@ -113,9 +150,15 @@ const Navbar = () => {
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
               {userProfile.profilePic ? (
-                <img src={userProfile.profilePic} alt="User Avatar" className="w-full h-full object-cover rounded-full" />
+                <img
+                  src={userProfile.profilePic}
+                  alt="User Avatar"
+                  className="w-full h-full object-cover rounded-full"
+                />
               ) : (
-                <span className="text-lg">{userProfile.name.charAt(0).toUpperCase()}</span>
+                <span className="text-lg">
+                  {userProfile.name.charAt(0).toUpperCase()}
+                </span>
               )}
             </div>
 
@@ -123,10 +166,18 @@ const Navbar = () => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-30">
                 <ul className="py-2 text-gray-700">
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => navigate("/my-profile")}>
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      navigate("/my-profile"), setDropdownOpen(false);
+                    }}
+                  >
                     My Profile
                   </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleLogout}>
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={handleLogout}
+                  >
                     Logout
                   </li>
                 </ul>
@@ -145,16 +196,29 @@ const Navbar = () => {
       {isOpen && (
         <div className="absolute top-16 z-20 left-0 w-full bg-white shadow-md flex flex-col items-center py-4 space-y-4 lg:hidden">
           {["Home", "Services", "About Us", "Contact"].map((item) => (
-            <Link key={item} to={`/${item.toLowerCase().replace(/ /g, "-")}`} className="text-black hover:text-[#1572D3] transition-colors font-medium" onClick={() => setIsOpen(false)}>
+            <Link
+              key={item}
+              to={`/${item.toLowerCase().replace(/ /g, "-")}`}
+              className="text-black hover:text-[#1572D3] transition-colors font-medium"
+              onClick={() => setIsOpen(false)}
+            >
               {item}
             </Link>
           ))}
           {!userProfile && (
             <>
-              <Link to="/sign-up" className="text-[#1572D3] font-bold px-6 py-2 rounded-md border border-[#1572D3] w-40 hover:bg-[#1572D3] hover:text-white transition" onClick={() => setIsOpen(false)}>
+              <Link
+                to="/sign-up"
+                className="text-[#1572D3] font-bold px-6 py-2 rounded-md border border-[#1572D3] w-40 hover:bg-[#1572D3] hover:text-white transition"
+                onClick={() => setIsOpen(false)}
+              >
                 Sign up
               </Link>
-              <Link to="/login" className="text-white font-medium px-6 py-2 rounded-md bg-[#1572D3] w-40 hover:bg-[#125ca1] transition" onClick={() => setIsOpen(false)}>
+              <Link
+                to="/login"
+                className="text-white font-medium px-6 py-2 rounded-md bg-[#1572D3] w-40 hover:bg-[#125ca1] transition"
+                onClick={() => setIsOpen(false)}
+              >
                 Login
               </Link>
             </>

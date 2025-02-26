@@ -1,11 +1,13 @@
 import express from "express";
 import auth from "../middlewares/AuthMiddleWare.js";
-import { createService, getAllServices, updateService } from "../controller/serviceController.js";
+import { createService, deleteService, getAllServices, updateService } from "../controller/serviceController.js";
+import upload from "../middlewares/multerConfig.js";
 const router = express.Router();
 
 
-router.post('/create-service',auth,createService);
+router.post('/create-service',upload.single('servicePic') , auth,createService);
 router.get('/get-all-services',auth,getAllServices);
+router.delete('/delete-service/:id',auth,deleteService);
 router.put('/update-service/:serviceId',auth,updateService);
 
 export default router;
