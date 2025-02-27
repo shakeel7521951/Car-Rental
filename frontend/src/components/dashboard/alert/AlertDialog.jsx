@@ -11,7 +11,7 @@ import {
 const AlertDialog = ({ message, isOpen, onClose, onConfirm }) => {
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle>Confirm Action</DialogTitle>
+      <DialogTitle>Are you sure you want to delete service</DialogTitle>
       <DialogContent>
         <DialogContentText>{message}</DialogContentText>
       </DialogContent>

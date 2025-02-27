@@ -67,7 +67,6 @@ export const deleteService = async (req, res) => {
   }
 };
 
-
 export const updateService = async (req, res) => {
   try {
     const { serviceId } = req.params;
@@ -78,9 +77,15 @@ export const updateService = async (req, res) => {
       return res.status(404).json({ message: "Service not found!" });
     }
 
-    Object.keys(updateData).forEach((key) => {
-      existingService[key] = updateData[key];
-    });
+    existingService.serviceName = updateData.serviceName || existingService.serviceName;
+    existingService.serviceCategory = updateData.serviceCategory || existingService.serviceCategory;
+    existingService.price = updateData.price || existingService.price;
+    existingService.passengers = updateData.passengers || existingService.passengers;
+    existingService.doors = updateData.doors || existingService.doors;
+
+    if (req.file) {
+      existingService.servicePic = req.file.path;
+    }
 
     const updatedService = await existingService.save();
 

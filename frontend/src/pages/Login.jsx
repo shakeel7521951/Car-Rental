@@ -81,7 +81,7 @@ export default function LoginPage() {
           </div>
 
           <button 
-            className="w-full bg-blue-600 text-white p-3 rounded-lg mt-4 font-semibold hover:bg-blue-700 transition duration-300 shadow-md disabled:opacity-50"
+            className="w-full bg-blue-600 text-white p-3 cursor-pointer rounded-lg mt-4 font-semibold hover:bg-blue-700 transition duration-300 shadow-md disabled:opacity-50"
             onClick={handleLogin}
             disabled={isLoading}
           >
@@ -96,7 +96,7 @@ export default function LoginPage() {
 
           {/* Google Sign-in Button */}
           <button
-            className="flex items-center justify-center w-full border border-gray-300 p-3 rounded-lg font-medium hover:bg-gray-100 transition duration-300"
+            className="flex items-center cursor-pointer justify-center w-full border border-gray-300 p-3 rounded-lg font-medium hover:bg-gray-100 transition duration-300"
             onClick={() => toast.info("Google Sign-in coming soon!")}
           >
             <div className="p-2 bg-red-500 rounded-full flex items-center justify-center">

@@ -1,67 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import p1 from "../../assets/home/p1.png";
-import Audi from '../../assets/home/Audi.png';
-import lambo from '../../assets/home/lambo.png';
-import p4 from '../../assets/home/p4.png';
-import user from "../../assets/home/user.png";
-import Frame from "../../assets/home/Frame.png";
-import airCondition from "../../assets/home/airCondition.png";
-import doors from "../../assets/home/doors.jpg";
-
-// Car rental deals data
-const carDeals = [
-  {
-    id: 1,
-    name: "Jaguar XE L P250",
-    price: "$200/day",
-    image: p1,
-    features: [
-      { icon: user, label: "4 Passengers" },
-      { icon: Frame, label: "Auto" },
-      { icon: airCondition, label: "Air Conditioning" },
-      { icon: doors, label: "4 Doors" },
-    ],
-  },
-  {
-    id: 2,
-    name: "Audi R8",
-    price: "$2100/day",
-    image: Audi,
-    features: [
-      { icon: user, label: "2 Passengers" },
-      { icon: Frame, label: "Auto" },
-      { icon: airCondition, label: "Air Conditioning" },
-      { icon: doors, label: "2 Doors" },
-    ],
-  },
-  {
-    id: 3,
-    name: "Lamborghini Huracan",
-    price: "$1900/day",
-    image: lambo,
-    features: [
-      { icon: user, label: "2 Passengers" },
-      { icon: Frame, label: "Auto" },
-      { icon: airCondition, label: "Air Conditioning" },
-      { icon: doors, label: "2 Doors" },
-    ],
-  },
-  {
-    id: 4,
-    name: "BMW M3",
-    price: "$1700/day",
-    image: p4,
-    features: [
-      { icon: user, label: "4 Passengers" },
-      { icon: Frame, label: "Auto" },
-      { icon: airCondition, label: "Air Conditioning" },
-      { icon: doors, label: "4 Doors" },
-    ],
-  },
-];
+import { useGetAllServicesQuery } from "../../redux/slices/ServiceApi";
+import { FaUser, FaCarSide, FaSnowflake, FaDoorOpen } from "react-icons/fa";
 
 const PopularServices = () => {
+  const { data, isLoading, error } = useGetAllServicesQuery();
+  const services = Array.isArray(data?.services)
+    ? data.services.slice(0, 4)
+    : [];
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading services</p>;
+
   return (
     <section className="mt-16 px-6 sm:px-10 md:px-16 lg:px-24">
       {/* Header */}
@@ -76,42 +26,53 @@ const PopularServices = () => {
 
       {/* Car Rental Cards */}
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {carDeals.map((car) => (
+        {services.map((service) => (
           <div
-            key={car.id}
-            className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row"
+            key={service._id}
+            className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row transform transition hover:scale-105"
           >
-            {/* Car Image */}
             <div className="md:w-[40%] my-auto">
-              <img src={car.image} alt={car.name} className="w-full h-auto" />
+              <img
+                src={service.servicePic || "https://via.placeholder.com/150"}
+                alt={service.serviceName}
+                className="w-full h-full max-h-[100]"
+              />
             </div>
-
-            {/* Car Details */}
-            <div className="md:w-[60%] px-2 py-6 flex flex-col justify-between">
+            <div className="md:w-[60%] px-4 py-6 flex flex-col justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">{car.name}</h2>
-
-                {/* Features */}
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {service.serviceName}
+                </h2>
                 <div className="grid grid-cols-2 gap-2 mt-3">
-                  {car.features.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <img src={feature.icon} alt={feature.label} className="w-6 h-6" />
-                      <p className="text-gray-700 text-sm">{feature.label}</p>
-                    </div>
-                  ))}
+                  <div className="flex items-center gap-2 text-gray-700 text-sm">
+                    <FaUser className="w-6 h-6" />
+                    <p>Passengers: {service.passengers || "N/A"}</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-700 text-sm">
+                    <FaCarSide className="w-6 h-6" />
+                    <p>Auto</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-700 text-sm">
+                    <FaSnowflake className="w-6 h-6" />
+                    <p>Air Conditioning</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-700 text-sm">
+                    <FaDoorOpen className="w-6 h-6" />
+                    <p>Doors: {service.doors || "N/A"}</p>
+                  </div>
                 </div>
               </div>
-
-              {/* Price & Button */}
-              <hr className="mt-2" /> 
+              <hr className="mt-2" />
               <div className="mt-4 flex items-center justify-between">
                 <div>
                   <p className="text-gray-600 text-sm">Price</p>
-                  <h3 className="text-2xl font-semibold text-gray-900">{car.price}</h3>
+                  <h3 className="text-2xl font-semibold text-gray-900">
+                    ${service.price}/day
+                  </h3>
                 </div>
                 <Link
-                  to="/"
-                  className="bg-blue-700 text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-blue-700 transition"
+                  to={`/booking/${service._id}`}
+                  className="bg-blue-700 text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-blue-800 transition"
                 >
                   Book Now
                 </Link>

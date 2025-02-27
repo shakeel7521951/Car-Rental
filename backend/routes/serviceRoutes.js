@@ -8,6 +8,6 @@ const router = express.Router();
 router.post('/create-service',upload.single('servicePic') , auth,createService);
 router.get('/get-all-services',auth,getAllServices);
 router.delete('/delete-service/:id',auth,deleteService);
-router.put('/update-service/:serviceId',auth,updateService);
+router.put("/update-service/:serviceId", upload.single("servicePic"), updateService);
 
 export default router;
