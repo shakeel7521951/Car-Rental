@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { useProfileQuery } from "./redux/slices/UserApi";
 import { clearProfile, setProfile } from "./redux/slices/UserSlice";
 import AdminRoute from "./middleWares/AdminRoute";
-import UpdateService from "./components/dashboard/products/UpdateProduct";
+// import UpdateService from "./components/dashboard/products/UpdateProduct";
 
 const MainLayout = () => {
   return (

@@ -8,8 +8,6 @@ export const createOrder = async (req, res) => {
   try {
     const { serviceId } = req.params;
     const customerId = req.user?.id;
-    const { pickupLocation, dropoffLocation, distance, price, pickupDateTime } =
-      req.body;
 
     if (!customerId) {
       return res.status(404).json({ message: "User not found!" });
@@ -20,14 +18,22 @@ export const createOrder = async (req, res) => {
       return res.status(404).json({ message: "Service not available" });
     }
 
+    const { data } = req.body;
+    const { from, to, distance, date, time } = data;
+    const { price } = req.body; 
+
+    const pickupDateTime = new Date(`${date}T${time}:00Z`);
+    const pickupDateOnly = new Date(date);
+
     const newOrder = new Order({
       customerId,
       serviceId,
-      pickupLocation,
-      dropoffLocation,
-      distance,
+      pickupLocation: from,
+      dropoffLocation: to,
+      distance: distance || 0,
       price,
-      pickupDateTime,
+      pickupTime: pickupDateTime,
+      pickupDate: pickupDateOnly,
     });
 
     await newOrder.save();
@@ -53,9 +59,11 @@ export const createOrder = async (req, res) => {
       order: populatedOrder,
     });
   } catch (error) {
+    console.error("Order Creation Error:", error);
     return res.status(500).json({
       message: "Internal Server Error",
       error: error.message,
+      stack: error.stack,
     });
   }
 };
@@ -81,36 +89,25 @@ export const getAllOrders = async (req, res) => {
 
 export const updateOrderStatus = async (req, res) => {
   try {
-    const { orderId, newStatus } = req.body;
-
+    const { orderId } = req.params;
+    const { newStatus } = req.body;
+   
     if (!orderId || !newStatus) {
-      return res
-        .status(400)
-        .json({ message: "Order ID and new status are required." });
+      return res.status(400).json({ message: "Order ID and new status are required." });
     }
 
     const allowedStatuses = ["Pending", "Fulfilled", "Rejected"];
     if (!allowedStatuses.includes(newStatus)) {
-      return res.status(400).json({
-        message:
-          "Invalid status. Allowed statuses: Pending, Fulfilled, Rejected.",
-      });
+      return res.status(400).json({ message: "Invalid status. Allowed statuses: Pending, Fulfilled, Rejected." });
     }
 
-    const order = await Order.findById(orderId).populate(
-      "customerId",
-      "name email"
-    );
-
+    const order = await Order.findById(orderId).populate("customerId", "name email");
     if (!order) {
       return res.status(404).json({ message: "Order not found!" });
     }
 
-    const customerName = order.customerId?.name;
-    const customerEmail = order.customerId?.email;
-
-    if (newStatus === "Fulfilled" && customerEmail) {
-      await sendOrderFulfillmentEmail(customerEmail, customerName, order);
+    if (newStatus === "Fulfilled" && order.customerId?.email) {
+      await sendOrderFulfillmentEmail(order.customerId.email, order.customerId.name, order);
     }
 
     const updatedOrder = await Order.findByIdAndUpdate(
@@ -124,9 +121,6 @@ export const updateOrderStatus = async (req, res) => {
       updatedOrder,
     });
   } catch (error) {
-    return res.status(500).json({
-      message: "Internal server error.",
-      error: error.message,
-    });
+    return res.status(500).json({ message: "Internal server error.", error: error.message });
   }
 };

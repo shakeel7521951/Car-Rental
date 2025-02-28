@@ -1,80 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, Eye } from "lucide-react";
-
-const orderData = [
-  {
-    id: "ORD001",
-    customer: "John Doe",
-    total: 235.4,
-    status: "Delivered",
-    date: "2023-07-01",
-  },
-  {
-    id: "ORD002",
-    customer: "Jane Smith",
-    total: 412.0,
-    status: "Processing",
-    date: "2023-07-02",
-  },
-  {
-    id: "ORD003",
-    customer: "Bob Johnson",
-    total: 162.5,
-    status: "Shipped",
-    date: "2023-07-03",
-  },
-  {
-    id: "ORD004",
-    customer: "Alice Brown",
-    total: 750.2,
-    status: "Pending",
-    date: "2023-07-04",
-  },
-  {
-    id: "ORD005",
-    customer: "Charlie Wilson",
-    total: 95.8,
-    status: "Delivered",
-    date: "2023-07-05",
-  },
-  {
-    id: "ORD006",
-    customer: "Eva Martinez",
-    total: 310.75,
-    status: "Processing",
-    date: "2023-07-06",
-  },
-  {
-    id: "ORD007",
-    customer: "David Lee",
-    total: 528.9,
-    status: "Shipped",
-    date: "2023-07-07",
-  },
-  {
-    id: "ORD008",
-    customer: "Grace Taylor",
-    total: 189.6,
-    status: "Delivered",
-    date: "2023-07-08",
-  },
-];
+import { useGetAllOrdersQuery } from "../../../redux/slices/OrderSlices";
+import OrderDetailModal from "./OrderDetailModel";
 
 const OrdersTable = () => {
+  const { data, isLoading } = useGetAllOrdersQuery();
+  const orders = Array.isArray(data?.orders) ? data.orders : [];
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredOrders, setFilteredOrders] = useState(orderData);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [showDetailModel, setShowDetailModel] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+  useEffect(() => {
+    setFilteredOrders(orders);
+  }, [orders]);
 
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
-    const filtered = orderData.filter(
+    const filtered = orders.filter(
       (order) =>
-        order.id.toLowerCase().includes(term) ||
-        order.customer.toLowerCase().includes(term)
+        order._id.toLowerCase().includes(term) ||
+        order.customerId?.name.toLowerCase().includes(term)
     );
     setFilteredOrders(filtered);
   };
+
+  const openModal = (order) => {
+    setSelectedOrder(order);
+    setShowDetailModel(true);
+  };
+
+  const closeModal = () => {
+    setShowDetailModel(false);
+    setSelectedOrder(null);
+  };
+
+  if (isLoading) {
+    return <div className="text-blue-700">Loading orders...</div>;
+  }
 
   return (
     <motion.div
@@ -125,40 +90,43 @@ const OrdersTable = () => {
           <tbody className="divide divide-gray-700">
             {filteredOrders.map((order) => (
               <motion.tr
-                key={order.id}
+                key={order._id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black">
-                  {order.id}
+                  {order._id}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black">
-                  {order.customer}
+                  {order.customerId?.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black">
-                  ${order.total.toFixed(2)}
+                  ${order.price ? order.price.toFixed(2) : "0.00"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-500">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      order.status === "Delivered"
+                      order.orderStatus === "Fulfilled"
                         ? "bg-green-100 text-green-800"
-                        : order.status === "Processing"
+                        : order.orderStatus === "Pending"
                         ? "bg-yellow-100 text-yellow-800"
-                        : order.status === "Shipped"
+                        : order.orderStatus === "Shipped"
                         ? "bg-blue-100 text-blue-800"
                         : "bg-red-100 text-red-800"
                     }`}
                   >
-                    {order.status}
+                    {order.orderStatus}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700">
-                  {order.date}
+                  {new Date(order.createdAt).toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700">
-                  <button className="text-indigo-400 hover:text-indigo-300 mr-2">
+                  <button
+                    onClick={() => openModal(order)}
+                    className="text-indigo-400 cursor-pointer hover:text-indigo-300 mr-2"
+                  >
                     <Eye size={18} />
                   </button>
                 </td>
@@ -167,7 +135,12 @@ const OrdersTable = () => {
           </tbody>
         </table>
       </div>
+
+      {showDetailModel && selectedOrder && (
+        <OrderDetailModal order={selectedOrder} onClose={closeModal} />
+      )}
     </motion.div>
   );
 };
+
 export default OrdersTable;

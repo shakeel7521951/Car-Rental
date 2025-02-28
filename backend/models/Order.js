@@ -24,13 +24,16 @@ const orderSchema = new mongoose.Schema(
     },
     distance:{
       type:Number,
-      required:true
     },
     price:{
       type:Number,
       required:true
     },
-    pickupDateTime:{
+    pickupTime:{
+      type:Date,
+      required:true
+    },
+    pickupDate:{
       type:Date,
       required:true
     },

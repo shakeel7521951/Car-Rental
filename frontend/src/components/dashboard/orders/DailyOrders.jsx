@@ -9,18 +9,32 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useGetAllOrdersQuery } from "../../../redux/slices/OrderSlices";
 
-const dailyOrdersData = [
-  { date: "07/01", orders: 45 },
-  { date: "07/02", orders: 52 },
-  { date: "07/03", orders: 49 },
-  { date: "07/04", orders: 60 },
-  { date: "07/05", orders: 55 },
-  { date: "07/06", orders: 58 },
-  { date: "07/07", orders: 62 },
-];
+// Function to format date as "MM/DD"
+const formatDate = (dateStr) => {
+  const date = new Date(dateStr);
+  return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getDate()).padStart(2, "0")}`;
+};
+
+// Function to group orders by date
+const getDailyOrdersData = (orders) => {
+  const dailyCounts = orders.reduce((acc, order) => {
+    const dateKey = formatDate(order.createdAt);
+    acc[dateKey] = (acc[dateKey] || 0) + 1;
+    return acc;
+  }, {});
+
+  return Object.entries(dailyCounts).map(([date, count]) => ({ date, orders: count }));
+};
 
 const DailyOrders = () => {
+  const { data, isLoading } = useGetAllOrdersQuery();
+  const orders = Array.isArray(data?.orders) ? data.orders : [];
+
+  // Dynamically generate daily orders data
+  const dailyOrdersData = getDailyOrdersData(orders);
+
   return (
     <motion.div
       className="bg-white bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-blue-700"
@@ -56,4 +70,5 @@ const DailyOrders = () => {
     </motion.div>
   );
 };
+
 export default DailyOrders;

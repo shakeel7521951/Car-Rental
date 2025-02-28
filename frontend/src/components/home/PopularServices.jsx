@@ -72,6 +72,7 @@ const PopularServices = () => {
                 </div>
                 <Link
                   to={`/booking/${service._id}`}
+                  state={{ service }}
                   className="bg-blue-700 text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-blue-800 transition"
                 >
                   Book Now

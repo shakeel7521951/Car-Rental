@@ -5,15 +5,20 @@ import Header from "../../components/dashboard/common/Header";
 import StatCard from "../../components/dashboard/common/StatCard";
 import DailyOrders from '../../components/dashboard/orders/DailyOrders';
 import OrdersTable from '../../components/dashboard/orders/OrdersTable';
-
-const orderStats = {
-  totalOrders: "1,234",
-  pendingOrders: "56",
-  completedOrders: "1,178",
-  totalRevenue: "$98,765",
-};
+import { useGetAllOrdersQuery } from "../../redux/slices/OrderSlices";
 
 const OrdersPage = () => {
+  const { data, isLoading, error } = useGetAllOrdersQuery();
+  const orders = data?.orders && Array.isArray(data.orders) ? data.orders : [];
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error fetching orders: {error.message}</p>;
+  }
+
   return (
     <div className="flex-1 relative z-10 overflow-auto">
       <Header title={"Orders"} />
@@ -28,25 +33,25 @@ const OrdersPage = () => {
           <StatCard
             name="Total Orders"
             icon={ShoppingBag}
-            value={orderStats.totalOrders}
+            value={orders.length}
             color="#6366F1"
           />
           <StatCard
             name="Pending Orders"
             icon={Clock}
-            value={orderStats.pendingOrders}
+            value={orders.filter((order)=>order.orderStatus === 'Pending').length}
             color="#F59E0B"
           />
           <StatCard
             name="Completed Orders"
             icon={CheckCircle}
-            value={orderStats.completedOrders}
+            value={orders.filter((order)=>order.orderStatus === "Fulfilled").length}
             color="#10B981"
           />
           <StatCard
             name="Total Revenue"
             icon={DollarSign}
-            value={orderStats.totalRevenue}
+            value={orders.reduce((total,order)=>total+(order.price || 0),0)}
             color="#EF4444"
           />
         </motion.div>
@@ -59,4 +64,5 @@ const OrdersPage = () => {
     </div>
   );
 };
+
 export default OrdersPage;

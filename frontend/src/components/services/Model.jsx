@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useCreateOrderMutation } from "../../redux/slices/OrderSlices";
+import { toast } from "react-toastify";
 
 const Modal = () => {
   const location = useLocation();
   const service = location.state?.service;
+  const navigate = useNavigate(); 
   const { carId } = useParams();
+  const [createOrder , {isLoading,error}] = useCreateOrderMutation();
   const [user, setUser] = useState({
     date: "",
     time: "",
@@ -20,9 +24,25 @@ const Modal = () => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
 
-  const orderCar = (e) => {
+  const orderCar = async (e) => {
     e.preventDefault();
-    console.log("Car Ordered:", user);
+    const id = service._id;
+    const orderData = {
+      data: user,
+      price:service.price
+    }
+    try {
+      const response = await createOrder({ id, data: orderData });
+
+      if (response.error) {
+        toast.error(response.error.data?.message || "Something went wrong", { position: "top-center" });
+      } else {
+        toast.success(response.data?.message || "Order created successfully!", { position: "top-center" });
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Unexpected error occurred!", { position: "top-center" });
+    }
   };
 
   return (
@@ -110,9 +130,9 @@ const Modal = () => {
           <div>
             <button
               type="submit"
-              className="hover:shadow-md w-full rounded-md bg-blue-600 py-3 px-8 text-center text-base font-semibold text-white outline-none transition duration-200 hover:bg-blue-700"
+              className={`hover:shadow-md w-full rounded-md bg-blue-600 py-3 px-8 text-center text-base font-semibold text-white outline-none transition duration-200 hover:bg-blue-700 cursor-pointer ${isLoading?"cursor-not-allowed":""}`}
             >
-              Book your Car
+              {isLoading?"Booking...":"Book your Car"}
             </button>
           </div>
         </form>
