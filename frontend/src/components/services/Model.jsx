@@ -68,6 +68,7 @@ const Modal = () => {
                   value={user.date}
                   onChange={handleChange}
                   id="date"
+                  required
                   className="w-full rounded-md border border-gray-300 bg-white py-3 px-6 text-base font-medium text-gray-700 outline-none focus:border-blue-500 focus:shadow-md"
                 />
               </div>
@@ -83,6 +84,7 @@ const Modal = () => {
                   onChange={handleChange}
                   name="time"
                   id="time"
+                  required
                   className="w-full rounded-md border border-gray-300 bg-white py-3 px-6 text-base font-medium text-gray-700 outline-none focus:border-blue-500 focus:shadow-md"
                 />
               </div>
@@ -102,6 +104,7 @@ const Modal = () => {
                     value={user.from}
                     onChange={handleChange}
                     id="from"
+                    required
                     placeholder="From"
                     className="w-full rounded-md border border-gray-300 bg-white py-3 px-6 text-base font-medium text-gray-700 outline-none focus:border-blue-500 focus:shadow-md"
                   />
@@ -115,6 +118,7 @@ const Modal = () => {
                     value={user.to}
                     onChange={handleChange}
                     id="to"
+                    required
                     placeholder="To"
                     className="w-full rounded-md border border-gray-300 bg-white py-3 px-6 text-base font-medium text-gray-700 outline-none focus:border-blue-500 focus:shadow-md"
                   />

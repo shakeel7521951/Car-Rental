@@ -6,8 +6,19 @@ import StatCard from '../../components/dashboard/common/StatCard';
 import SalesOverviewChart from "../../components/dashboard/overview/SalesOverviewChart";
 import CategoryDistributionChart from "../../components/dashboard/overview/CategoryDistributionChart";
 import SalesChannelChart from "../../components/dashboard/overview/SalesChannelChart";
+import { useAllUsersQuery } from "../../redux/slices/UserApi";
+import { useGetAllServicesQuery } from "../../redux/slices/ServiceApi";
+import { useGetAllOrdersQuery } from "../../redux/slices/OrderSlices";
 
 const OverviewPage = () => {
+  const { data: userData, isLoading: isUsersLoading } = useAllUsersQuery();
+  const { data: serviceData, isLoading: isServicesLoading } = useGetAllServicesQuery();
+  const {data:ordersData , isLoading:isOrdersLoading } = useGetAllOrdersQuery();
+
+    const users = Array.isArray(userData) ? userData : [];
+  const services = Array.isArray(serviceData?.services) ? serviceData.services : [];
+  const orders = Array.isArray(ordersData?.orders)?ordersData.orders:[];
+
   return (
     <div className="flex-1 overflow-auto relative z-10">
       <Header title="Overview" />
@@ -27,21 +38,21 @@ const OverviewPage = () => {
             color="#6366F1"
           />
           <StatCard
-            name="New Users"
+            name="Total Users"
             icon={Users}
-            value="1,234"
+            value={isUsersLoading ? "Loading..." : users.length}
             color="#8B5CF6"
           />
           <StatCard
-            name="Listed Items"
+            name="Total Services"
             icon={ShoppingBag}
-            value="567"
+            value={isServicesLoading ? "Loading..." : services.length}
             color="#EC4899"
           />
           <StatCard
-            name="Conversion Rate"
+            name="Total Orders"
             icon={BarChart2}
-            value="12.5%"
+            value={orders.length}
             color="#10B981"
           />
         </motion.div>
@@ -55,4 +66,5 @@ const OverviewPage = () => {
     </div>
   );
 };
+
 export default OverviewPage;
