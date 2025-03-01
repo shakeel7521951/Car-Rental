@@ -24,11 +24,15 @@ import { useDispatch } from "react-redux";
 import { useProfileQuery } from "./redux/slices/UserApi";
 import { clearProfile, setProfile } from "./redux/slices/UserSlice";
 import AdminRoute from "./middleWares/AdminRoute";
+import ScrollToTop from "./components/ScrollToTop";
+import UserOrders from "./pages/UserOrders";
+import UpdateOrder from "./pages/UpdateOrder";
 // import UpdateService from "./components/dashboard/products/UpdateProduct";
 
 const MainLayout = () => {
   return (
     <>
+    <ScrollToTop />
       <Navbar />
       <Outlet />
       <Footer />
@@ -44,6 +48,7 @@ const AdminLayout = () => {
           <div className="absolute inset-0 bg-gradient-to-br bg-white text-blue-700" />
           <div className="absolute inset-0 backdrop-blur-sm" />
         </div>
+        <ScrollToTop />
         <Sidebar />
         <Outlet />
       </div>
@@ -63,6 +68,8 @@ const router = createBrowserRouter([
       { path: "/about-us", element: <About /> },
       { path: "/my-profile", element: <MyProfile /> },
       { path: "/update-password", element: <UpdatePassword /> },
+      { path: "/my-orders", element: <UserOrders /> },
+      { path: "/update-order/:id", element: <UpdateOrder /> },
     ],
   },
   { path: "/login", element: <LoginPage /> },

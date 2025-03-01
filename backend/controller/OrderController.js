@@ -20,7 +20,7 @@ export const createOrder = async (req, res) => {
 
     const { data } = req.body;
     const { from, to, distance, date, time } = data;
-    const { price } = req.body; 
+    const { price } = req.body;
 
     const pickupDateTime = new Date(`${date}T${time}:00Z`);
     const pickupDateOnly = new Date(date);
@@ -72,7 +72,7 @@ export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
       .populate("customerId", "name email")
-      .populate("serviceId", "serviceName serviceCategory image");
+      .populate("serviceId", "serviceName serviceCategory servicePic");
 
     if (!orders || orders.length === 0) {
       return res.status(404).json({ message: "No orders found!" });
@@ -91,23 +91,37 @@ export const updateOrderStatus = async (req, res) => {
   try {
     const { orderId } = req.params;
     const { newStatus } = req.body;
-   
+
     if (!orderId || !newStatus) {
-      return res.status(400).json({ message: "Order ID and new status are required." });
+      return res
+        .status(400)
+        .json({ message: "Order ID and new status are required." });
     }
 
     const allowedStatuses = ["Pending", "Fulfilled", "Rejected"];
     if (!allowedStatuses.includes(newStatus)) {
-      return res.status(400).json({ message: "Invalid status. Allowed statuses: Pending, Fulfilled, Rejected." });
+      return res
+        .status(400)
+        .json({
+          message:
+            "Invalid status. Allowed statuses: Pending, Fulfilled, Rejected.",
+        });
     }
 
-    const order = await Order.findById(orderId).populate("customerId", "name email");
+    const order = await Order.findById(orderId).populate(
+      "customerId",
+      "name email"
+    );
     if (!order) {
       return res.status(404).json({ message: "Order not found!" });
     }
 
     if (newStatus === "Fulfilled" && order.customerId?.email) {
-      await sendOrderFulfillmentEmail(order.customerId.email, order.customerId.name, order);
+      await sendOrderFulfillmentEmail(
+        order.customerId.email,
+        order.customerId.name,
+        order
+      );
     }
 
     const updatedOrder = await Order.findByIdAndUpdate(
@@ -121,6 +135,68 @@ export const updateOrderStatus = async (req, res) => {
       updatedOrder,
     });
   } catch (error) {
-    return res.status(500).json({ message: "Internal server error.", error: error.message });
+    return res
+      .status(500)
+      .json({ message: "Internal server error.", error: error.message });
+  }
+};
+
+export const myOrders = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const myOrders = await Order.find({ customerId: userId })
+      .sort({ createdAt: -1 })
+      .populate("customerId", "name email")
+      .populate("serviceId", "serviceName serviceCategory servicePic");
+
+    if (!myOrders.length) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No orders found." });
+    }
+
+    res.status(200).json({ success: true, orders: myOrders });
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Internal Server Error",
+        error: error.message,
+      });
+  }
+};
+
+export const updateOrder = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const orderData = req.body;
+
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, orderData, {
+      new: true,
+    });
+
+    if (!updatedOrder) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found!" });
+    }
+
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Order updated successfully!",
+        order: updatedOrder,
+      });
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Internal Server Error",
+        error: error.message,
+      });
   }
 };

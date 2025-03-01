@@ -4,7 +4,7 @@ const auth = (req, res, next) => {
     const token = req.cookies.token;
 
     if (!token) {
-        return res.status(401).json({ message: "Access denied, no token provided" });
+        return res.status(401).json({ message: "You are not logged in. Please login first!" });
     }
 
     try {

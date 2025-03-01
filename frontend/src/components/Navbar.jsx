@@ -111,7 +111,15 @@ const Navbar = () => {
                   >
                     My Profile
                   </li>
-
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      navigate("/my-orders");
+                      setDropdownOpen(false);
+                    }}
+                  >
+                    My Orders
+                  </li>
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={handleLogout}

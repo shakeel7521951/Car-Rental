@@ -16,17 +16,37 @@ export const OrderApi = createApi({
       }),
       invalidatesTags: ["Order"],
     }),
+
     getAllOrders: builder.query({
       query: () => ({
         url: "/all-orders",
         method: "GET",
       }),
+      providesTags: ["Order"], // ✅ Added
     }),
+
     updateOrderStatus: builder.mutation({
       query: ({ orderId, newStatus }) => ({
         url: `/update-order-status/${orderId}`,
         method: "PUT",
         body: { newStatus },
+      }),
+      invalidatesTags: ["Order"],
+    }),
+
+    myOrders: builder.query({
+      query: () => ({
+        url: "/my-orders",
+        method: "GET",
+      }),
+      providesTags: ["Order"], // ✅ Added
+    }),
+
+    updateOrder: builder.mutation({
+      query: ({ orderId, data }) => ({
+        url: `/update-order/${orderId}`,
+        method: "PUT",
+        body: data,
       }),
       invalidatesTags: ["Order"],
     }),
@@ -37,4 +57,6 @@ export const {
   useCreateOrderMutation,
   useGetAllOrdersQuery,
   useUpdateOrderStatusMutation,
+  useMyOrdersQuery,
+  useUpdateOrderMutation,
 } = OrderApi;

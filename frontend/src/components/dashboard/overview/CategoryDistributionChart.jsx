@@ -24,7 +24,7 @@ const getCategoryData = (services) => {
 };
 
 const CategoryDistributionChart = () => {
-  const { data, isLoading } = useGetAllServicesQuery();
+  const { data } = useGetAllServicesQuery();
   const services = Array.isArray(data?.services) ? data.services : [];
 
   // Dynamically generate category data
