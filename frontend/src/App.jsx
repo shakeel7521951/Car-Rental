@@ -27,7 +27,6 @@ import AdminRoute from "./middleWares/AdminRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import UserOrders from "./pages/UserOrders";
 import UpdateOrder from "./pages/UpdateOrder";
-// import UpdateService from "./components/dashboard/products/UpdateProduct";
 
 const MainLayout = () => {
   return (

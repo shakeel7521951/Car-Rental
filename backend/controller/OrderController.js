@@ -98,7 +98,7 @@ export const updateOrderStatus = async (req, res) => {
         .json({ message: "Order ID and new status are required." });
     }
 
-    const allowedStatuses = ["Pending", "Fulfilled", "Rejected"];
+    const allowedStatuses = ["Pending", "Fulfilled", "Rejected","Deleted"];
     if (!allowedStatuses.includes(newStatus)) {
       return res
         .status(400)
@@ -198,5 +198,31 @@ export const updateOrder = async (req, res) => {
         message: "Internal Server Error",
         error: error.message,
       });
+  }
+};
+
+export const deleteOrder = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    if (req.user.role === "Admin") {
+      await Order.findByIdAndDelete(orderId);
+      return res.status(200).json({ message: "Order deleted by admin" });
+    } else if (req.user.role === "User" && status === "Pending") {
+      // User can perform a soft delete (mark as deleted)
+      order.orderStatus = "Cancelled";
+      order.deletedBy = "user";
+      await order.save();
+      return res.status(200).json({ message: "Order cancelled by user" });
+    } else {
+      return res.status(403).json({ message: "Unauthorized action" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error", error });
   }
 };

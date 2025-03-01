@@ -12,38 +12,42 @@ const orderSchema = new mongoose.Schema(
       ref: "Service",
       required: true,
     },
-    pickupLocation:{
-      type:String,
-      required:true,
-      trim:true
+    pickupLocation: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    dropoffLocation:{
-      type:String,
-      required:true,
-      trim:true
+    dropoffLocation: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    distance:{
-      type:Number,
+    distance: {
+      type: Number,
     },
-    price:{
-      type:Number,
-      required:true
+    price: {
+      type: Number,
+      required: true,
     },
-    pickupTime:{
-      type:Date,
-      required:true
+    pickupTime: {
+      type: Date,
+      required: true,
     },
-    pickupDate:{
-      type:Date,
-      required:true
+    pickupDate: {
+      type: Date,
+      required: true,
     },
-    orderStatus:{
-      type:String,
-      default:'Pending'
-    }
+    orderStatus: {
+      type: String,
+      default: "Pending",
+    },
+    deletedBy: {
+      type: String,
+      enum: ["user", "admin"],
+    },
   },
   { timestamps: true }
 );
 
-const Order = mongoose.model('Order',orderSchema);
+const Order = mongoose.model("Order", orderSchema);
 export default Order;

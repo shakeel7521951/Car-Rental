@@ -38,16 +38,16 @@ const MyProfile = () => {
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-
+  
     setSelectedImage(URL.createObjectURL(file));
-
+  
     const formData = new FormData();
     formData.append("profilePic", file);
-
+  
     try {
       const resp = await updateProfile(formData);
       console.log(resp);
-
+  
       if (resp.error) {
         toast.error(
           resp.error.data?.message || "Failed to update profile picture"
@@ -61,7 +61,7 @@ const MyProfile = () => {
     } catch (error) {
       toast.error("An error occurred while updating profile picture");
     }
-  };
+  }; 
 
   if (isLoading) return <div className="text-center mt-10">Loading...</div>;
   if (error)

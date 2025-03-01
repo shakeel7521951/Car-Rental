@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, Trash2, Pencil } from "lucide-react";
-import { useMyOrdersQuery } from "../redux/slices/OrderSlices";
+import {
+  useDeleteOrderMutation,
+  useMyOrdersQuery,
+} from "../redux/slices/OrderSlices";
 import { useNavigate } from "react-router-dom";
 
 const UserOrders = () => {
@@ -9,9 +12,10 @@ const UserOrders = () => {
   const orders = Array.isArray(data?.orders) ? data.orders : [];
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredOrders, setFilteredOrders] = useState(orders);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null); // State to store the selected order for deletion
   const navigate = useNavigate();
+  const [deleteOrder, { isLoading: deleteLoading }] = useDeleteOrderMutation();
 
   useEffect(() => {
     setFilteredOrders(orders);
@@ -47,26 +51,32 @@ const UserOrders = () => {
   };
 
   const handleDeleteClick = (order) => {
-    setSelectedOrder(order); // Set the selected order
-    setIsModalOpen(true); // Open the modal
+    setSelectedOrder(order);
+    setIsModalOpen(true);
   };
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (selectedOrder) {
-      console.log(
-        `${
-          selectedOrder.orderStatus === "Pending" ? "Cancel" : "Delete"
-        } Order with ID: ${selectedOrder._id}`
-      );
-      // Implement delete functionality (API call to delete the order)
+      try {
+        const response = await deleteOrder({
+          orderId: selectedOrder._id,
+          status: selectedOrder.orderStatus,
+        }).unwrap();
+        handleDeleteCancel();
+        toast.success(response.message || "Order deleted successfully", {
+          position: "top-center",
+        });
+      } catch (error) {
+        toast.error(error.data?.message || "Failed to delete order", {
+          position: "top-center",
+        });
+      }
     }
-    setIsModalOpen(false); // Close the modal
-    setSelectedOrder(null); // Reset the selected order
   };
 
   const handleDeleteCancel = () => {
-    setIsModalOpen(false); // Close the modal
-    setSelectedOrder(null); // Reset the selected order
+    setIsModalOpen(false); 
+    setSelectedOrder(null);
   };
 
   if (isLoading) {
@@ -130,7 +140,10 @@ const UserOrders = () => {
               value={searchTerm}
               onChange={handleSearch}
             />
-            <Search className="absolute left-3 top-2.5 text-blue-700" size={18} />
+            <Search
+              className="absolute left-3 top-2.5 text-blue-700"
+              size={18}
+            />
           </div>
         </div>
 
@@ -200,7 +213,8 @@ const UserOrders = () => {
                       minute: "2-digit",
                       second: "2-digit",
                       hour12: true,
-                      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                      timeZone:
+                        Intl.DateTimeFormat().resolvedOptions().timeZone,
                     })}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700">
@@ -213,9 +227,13 @@ const UserOrders = () => {
                     <button
                       onClick={() => handleEditOrder(order)}
                       title="Edit"
-                      disabled={order.orderStatus === "Fulfilled" || order.orderStatus === "Rejected"}
+                      disabled={
+                        order.orderStatus === "Fulfilled" ||
+                        order.orderStatus === "Rejected"
+                      }
                       className={`text-indigo-400 cursor-pointer hover:text-indigo-300 mr-2 ${
-                        order.orderStatus === "Fulfilled" || order.orderStatus === "Rejected"
+                        order.orderStatus === "Fulfilled" ||
+                        order.orderStatus === "Rejected"
                           ? "opacity-50 cursor-not-allowed"
                           : ""
                       }`}
@@ -226,7 +244,9 @@ const UserOrders = () => {
                       onClick={() => handleDeleteClick(order)}
                       className="text-red-500 cursor-pointer hover:text-red-300"
                       title={
-                        order.orderStatus === "Pending" ? "Cancel Order" : "Delete Order"
+                        order.orderStatus === "Pending"
+                          ? "Cancel Order"
+                          : "Delete Order"
                       }
                     >
                       <Trash2 size={18} />

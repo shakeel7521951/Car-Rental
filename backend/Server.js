@@ -13,17 +13,18 @@ import orderRoutes from "./routes/orderRoutes.js";
 const port = process.env.PORT || 5000;
 const app = express();
 
+// Middleware
 app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
   })
 );
-
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
+// Routes
 app.get("/", (req, res) => {
   res.send("Backend is running...");
 });
@@ -34,11 +35,12 @@ mongoose
   .then(() => console.log("Database is connected"))
   .catch((error) => console.error("Error in connecting database:", error));
 
-// Routes
+// API Routes
 app.use("/api/v1", userRoutes);
 app.use("/api/v1", serviceRoutes);
 app.use("/api/v1", orderRoutes);
 
+// Start the server
 app.listen(port, () => {
   console.log(`Server is running on Port no ${port}`);
 });

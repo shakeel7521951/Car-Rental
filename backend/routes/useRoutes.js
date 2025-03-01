@@ -22,6 +22,6 @@ router.get("/my-profile", auth, myProfile);
 router.put("/update-password", auth, updatePassword);
 router.get("/all-users",auth,allUsers);
 router.put("/update-user-role",auth,updateUserRole);
-router.put("/update-profile", auth,upload.single("profilePic"), updateProfile);
+router.put("/update-profile", upload.single("profilePic"),auth, updateProfile);
 
 export default router;

@@ -160,8 +160,10 @@ export const updateProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // If no file is uploaded, keep the existing profile picture
     const profilePicUrl = req.file?.path || user.profilePic;
 
+    // Update the user's profile picture
     user.profilePic = profilePicUrl;
     await user.save();
 
@@ -169,6 +171,7 @@ export const updateProfile = async (req, res) => {
       .status(200)
       .json({ message: "Profile updated successfully", user });
   } catch (error) {
+    console.error("Error updating profile:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

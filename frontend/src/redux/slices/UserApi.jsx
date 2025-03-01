@@ -49,10 +49,13 @@ export const userApi = createApi({
 
     updateProfile: builder.mutation({
       query: (formData) => ({
-        url: "/update-profile",
+        url: "/api/v1/update-profile",
         method: "PUT",
         body: formData,
         credentials: "include",
+        headers: {
+          // Do not set Content-Type manually for FormData
+        },
       }),
     }),
 
