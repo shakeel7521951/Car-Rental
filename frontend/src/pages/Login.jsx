@@ -5,7 +5,7 @@ import { useLoginMutation } from "../redux/slices/UserApi";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setProfile } from "../redux/slices/UserSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [loginUser, { isLoading }] = useLoginMutation();
@@ -45,7 +45,7 @@ export default function LoginPage() {
           <h2 className="text-3xl font-bold text-gray-800 mb-2 text-center">Welcome Back</h2>
           <p className="text-gray-600 text-sm text-center mb-6">
             Start your journey with us. Don’t have an account?{" "}
-            <span className="text-blue-500 font-semibold cursor-pointer">Sign up</span>
+            <Link to="/sign-up" className="text-blue-500 font-semibold cursor-pointer">Sign up</Link>
           </p>
 
           <div className="mb-4">

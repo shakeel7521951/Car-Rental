@@ -6,30 +6,35 @@ import {
   useMyOrdersQuery,
 } from "../redux/slices/OrderSlices";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const UserOrders = () => {
   const { data, isLoading } = useMyOrdersQuery();
   const orders = Array.isArray(data?.orders) ? data.orders : [];
+
+  // Filter out orders where deletedBy="user"
+  const filteredOrders = orders.filter((order) => order.deletedBy !== "user");
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredOrders, setFilteredOrders] = useState(orders);
+  const [finalFilteredOrders, setFinalFilteredOrders] = useState(filteredOrders);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null); // State to store the selected order for deletion
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const navigate = useNavigate();
-  const [deleteOrder, { isLoading: deleteLoading }] = useDeleteOrderMutation();
+  const [deleteOrder] = useDeleteOrderMutation();
 
   useEffect(() => {
-    setFilteredOrders(orders);
-  }, [orders]);
+    setFinalFilteredOrders(filteredOrders);
+  }, [filteredOrders]);
 
   useEffect(() => {
-    setFilteredOrders(
-      orders.filter(
+    setFinalFilteredOrders(
+      filteredOrders.filter(
         (order) =>
           order._id.toLowerCase().includes(searchTerm) ||
           order.customerId?.name.toLowerCase().includes(searchTerm)
       )
     );
-  }, [searchTerm, orders]);
+  }, [searchTerm, filteredOrders]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
@@ -173,7 +178,7 @@ const UserOrders = () => {
             </thead>
 
             <tbody className="divide-y divide-gray-700">
-              {filteredOrders.map((order) => (
+              {finalFilteredOrders.map((order) => (
                 <motion.tr
                   key={order._id}
                   initial={{ opacity: 0 }}
