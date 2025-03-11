@@ -77,7 +77,7 @@ export default function LoginPage() {
               <input type="checkbox" id="remember" className="mr-2" />
               <label htmlFor="remember" className="text-gray-600 text-sm">Remember me</label>
             </div>
-            <span className="text-blue-500 font-medium cursor-pointer text-sm">Forgot password?</span>
+            <Link to="/forgot-password" className="text-blue-500 font-medium cursor-pointer text-sm">Forgot password?</Link>
           </div>
 
           <button 

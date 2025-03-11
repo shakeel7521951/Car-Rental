@@ -1,6 +1,5 @@
 import User from "../models/User.js";
 import sendMail from "../utils/SendMail.js";
-import cloudinary from "cloudinary";
 
 export const register = async (req, res) => {
   try {
@@ -59,6 +58,99 @@ export const verifyUser = async (req, res) => {
     res.status(200).json({ message: "User verified successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const forgotPasswordOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: "Email is required." });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found with this email." });
+    }
+
+    const otp = await user.generateOTP();
+
+    const name = user.name;
+    const subject = "OTP for Password Reset";
+    const text = `
+      <p>Hello <strong>${name}</strong>,</p>
+      <p>We received a request to reset your password for your account. To proceed, please use the OTP below:</p>
+      <h3 style="font-size: 32px; font-weight: bold; color: #4CAF50;">${otp}</h3>
+      <p>This OTP is valid for a limited time. If you did not request a password reset, please ignore this email or contact our support team immediately.</p>
+      <p>Best regards,</p>
+      <p>The Car Rental Service Team</p>
+    `;
+
+    await sendMail(email, subject, text);
+
+    user.otp = otp;
+    await user.save();
+
+    res.status(200).json({ message: "OTP sent successfully!" });
+  } catch (error) {
+    console.error("Error in forgotPasswordOtp:", error);
+    res.status(500).json({ message: "Internal Server Error." });
+  }
+};
+
+export const verifyOTP = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Email and OTP are required." });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found with this email." });
+    }
+
+    if (user.otp !== otp) {
+      return res.status(400).json({ message: "Invalid or Expired OTP." });
+    }
+
+    // user.otp = undefined;
+    // await user.save();
+
+    res.status(200).json({ message: "OTP verified successfully." });
+  } catch (error) {
+    console.error("Error in verifyOTP:", error); 
+    res.status(500).json({ message: "Internal Server Error." });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and Password are required.' });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found with this email.' });
+    }
+
+    if (!user.otp) {
+      return res.status(400).json({ message: 'OTP not verified. Please verify your OTP first.' });
+    }
+
+    user.password = password;
+    user.otp = undefined;
+    await user.save();
+
+    res.status(200).json({ message: 'Password reset successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error.' });
   }
 };
 
@@ -212,12 +304,10 @@ export const updateUserRole = async (req, res) => {
         .json({ message: "Something went wrong. Please try again later." });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "User role updated successfully",
-        user: updateUserRole,
-      });
+    res.status(200).json({
+      message: "User role updated successfully",
+      user: updateUserRole,
+    });
   } catch (error) {
     console.error("Error updating user role:", error);
     res

@@ -15,7 +15,7 @@ const SendMail = async (email, subject, text) => {
 
     await sgMail.send(msg);
   } catch (error) {
-    throw new Error("Failed to send email");
+    throw new Error("Failed to send mail");
   }
 };
 

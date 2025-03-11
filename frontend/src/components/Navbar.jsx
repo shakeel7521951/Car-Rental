@@ -54,7 +54,7 @@ const Navbar = () => {
       </Link>
 
       <div className="hidden lg:flex gap-6">
-        {["Home", "Services", "About Us", "Contact"].map((item) => (
+        {["Home", "Services", "Blogs", "About Us" , "Contact"].map((item) => (
           <Link
             key={item}
             to={`/${item.toLowerCase().replace(/ /g, "-")}`}

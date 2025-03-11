@@ -27,6 +27,9 @@ import AdminRoute from "./middleWares/AdminRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import UserOrders from "./pages/UserOrders";
 import UpdateOrder from "./pages/UpdateOrder";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import Blogs from "./pages/Blogs";
 
 const MainLayout = () => {
   return (
@@ -68,7 +71,10 @@ const router = createBrowserRouter([
       { path: "/my-profile", element: <MyProfile /> },
       { path: "/update-password", element: <UpdatePassword /> },
       { path: "/my-orders", element: <UserOrders /> },
+      { path: "/forgot-password", element: <ForgotPassword /> },
       { path: "/update-order/:id", element: <UpdateOrder /> },
+      { path: "/reset-password", element: <ResetPassword /> },
+      { path: "/blogs", element: <Blogs /> },
     ],
   },
   { path: "/login", element: <LoginPage /> },

@@ -49,13 +49,10 @@ export const userApi = createApi({
 
     updateProfile: builder.mutation({
       query: (formData) => ({
-        url: "/api/v1/update-profile",
+        url: "/update-profile",
         method: "PUT",
         body: formData,
         credentials: "include",
-        headers: {
-          // Do not set Content-Type manually for FormData
-        },
       }),
     }),
 
@@ -69,19 +66,19 @@ export const userApi = createApi({
 
     allUsers: builder.query({
       query: () => ({
-        url:'/all-users',
-        method:"GET",
-        credentials:"include"
+        url: "/all-users",
+        method: "GET",
+        credentials: "include",
       }),
     }),
 
-    updateUserRole:builder.mutation({
-      query:({userId,role})=>({
-        url:"/update-user-role",
-        method:'PUT',
-        body:{userId,role},
-        credentials:'include'
-      })
+    updateUserRole: builder.mutation({
+      query: ({ userId, role }) => ({
+        url: "/update-user-role",
+        method: "PUT",
+        body: { userId, role },
+        credentials: "include",
+      }),
     }),
 
     verifyUser: builder.mutation({
@@ -91,6 +88,31 @@ export const userApi = createApi({
         body: { otp, email },
       }),
     }),
+
+    forgotpasswordotp: builder.mutation({
+      query: (email) => ({
+        url: "/forgot-password-otp",
+        method: "POST",
+        body: { email },
+      }),
+    }),
+    
+    verifyOTP: builder.mutation({
+      query: ({email,otp}) => ({
+        url: "/verify-otp",
+        method: "POST",
+        body: { email,otp },
+      }),
+    }),
+
+    resetPassword: builder.mutation({
+      query: ({email,password}) => ({
+        url: "/reset-password",
+        method: "PUT",
+        body: { email,password },
+      }),
+    }),
+
   }),
 });
 
@@ -103,5 +125,8 @@ export const {
   useUpdatePasswordMutation,
   useUpdateProfileMutation,
   useAllUsersQuery,
-  useUpdateUserRoleMutation
+  useUpdateUserRoleMutation,
+  useForgotpasswordotpMutation,
+  useVerifyOTPMutation,
+  useResetPasswordMutation
 } = userApi;
