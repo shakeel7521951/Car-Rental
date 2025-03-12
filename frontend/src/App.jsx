@@ -34,7 +34,7 @@ import Blogs from "./pages/Blogs";
 const MainLayout = () => {
   return (
     <>
-    <ScrollToTop />
+      <ScrollToTop />
       <Navbar />
       <Outlet />
       <Footer />
