@@ -19,11 +19,11 @@ import auth from "../middlewares/AuthMiddleWare.js";
 const router = express.Router();
 import upload from "../middlewares/multerConfig.js";
 
-router.post("/login", login);
-router.post("/app-login", appLogin);
+router.post("/login", login); //for web
+router.post("/app-login", appLogin); //for app
 router.post("/sign-up", register);
-router.post("/verify-user", verifyUser);
-router.post("/app-verify-user", appVerifyUser);
+router.post("/verify-user", verifyUser); // for web
+router.post("/app-verify-user", appVerifyUser); // for app
 router.post("/logout", auth, logout);
 router.get("/my-profile", auth, myProfile);
 router.put("/update-password", auth, updatePassword);
