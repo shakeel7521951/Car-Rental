@@ -23,7 +23,7 @@ const OrderDetailModal = ({ order, onClose }) => {
 
   return (
     <motion.div
-      className="fixed inset-0 bg-[#212020] bg-opacity-50 flex justify-center items-center p-4"
+      className="fixed inset-0 bg-[#21202067] bg-opacity-50 flex justify-center items-center p-4 rounded-xl "
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
@@ -44,6 +44,12 @@ const OrderDetailModal = ({ order, onClose }) => {
           </p>
           <p>
             <strong>Total Price:</strong> ${order.price.toFixed(2)}
+          </p>
+          <p>
+            <strong>Pickup Location:</strong> {order.pickupLocation}
+          </p>
+          <p>
+            <strong>Dropoff Location:</strong> {order.dropoffLocation}
           </p>
           <p>
             <strong>Date:</strong>{" "}
