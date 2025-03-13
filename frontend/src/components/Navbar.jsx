@@ -6,6 +6,7 @@ import { selectUserProfile, clearProfile } from "../redux/slices/UserSlice";
 import logo from "../assets/footerContent/Frame.png";
 import { useLogoutMutation } from "../redux/slices/UserApi";
 import { toast } from "react-toastify";
+import colorLogo from '../assets/colorLogo.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,17 +41,14 @@ const Navbar = () => {
         onClick={() => setIsOpen(false)}
       >
         <img
-          src={logo}
+          src={colorLogo}
           style={{
             filter:
               "brightness(0) saturate(100%) invert(31%) sepia(89%) saturate(714%) hue-rotate(194deg) brightness(96%) contrast(97%)",
           }}
-          className="w-10 h-10"
+          className="w-52"
           alt="Logo"
         />
-        <h1 className="text-[#1572D3] text-lg lg:text-xl font-bold">
-          RENTCARS
-        </h1>
       </Link>
 
       <div className="hidden lg:flex gap-6">

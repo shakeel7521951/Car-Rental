@@ -6,6 +6,7 @@ import sms from "../assets/footerContent/sms.png";
 import facebook from "../assets/footerContent/facebook.png";
 import insta from "../assets/footerContent/instagram.png";
 import youtube from "../assets/footerContent/youtube.png";
+import whiteLogo from '../assets/whiteLogo.png';
 
 const data = [
   {
@@ -33,8 +34,7 @@ const Footer = () => {
         {/* Logo & Contact Info */}
         <div>
           <div className="flex items-center gap-2">
-            <img src={logo} alt="LOGO" className="w-10 h-10" />
-            <h1 className="poppins-semibold text-lg">RENTCARS</h1>
+            <img src={whiteLogo} alt="LOGO" className="w-52" />
           </div>
           <div className="mt-4">
             {data.map((item) => (

@@ -67,10 +67,10 @@ const OrdersTable = () => {
           <thead>
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">
-                Order ID
+                Customer Name
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">
-                Customer
+                Customer Email
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">
                 Total
@@ -80,6 +80,12 @@ const OrdersTable = () => {
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">
                 Date
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">
+                Pickup Location
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">
+                Dropoff Location
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">
                 Actions
@@ -96,11 +102,11 @@ const OrdersTable = () => {
                 transition={{ duration: 0.3 }}
               >
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black">
-                  {order._id}
+                  {order.customerId?.name || "N/A"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black">
-                  {order.customerId?.name}
-                </td>
+                    {order.customerId?.email || "N/A"}
+                  </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black">
                   ${order.price ? order.price.toFixed(2) : "0.00"}
                 </td>
@@ -121,6 +127,12 @@ const OrdersTable = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700">
                   {new Date(order.createdAt).toLocaleDateString()}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700">
+                  {order.pickupLocation ? order.pickupLocation : ""}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700">
+                  {order.dropoffLocation ? order.dropoffLocation : ""}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700">
                   <button
