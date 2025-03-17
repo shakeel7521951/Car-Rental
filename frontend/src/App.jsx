@@ -30,6 +30,7 @@ import UpdateOrder from "./pages/UpdateOrder";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Blogs from "./pages/Blogs";
+import BlogDetails from "./components/blogs/BlogDetails";
 
 const MainLayout = () => {
   return (
@@ -75,6 +76,7 @@ const router = createBrowserRouter([
       { path: "/update-order/:id", element: <UpdateOrder /> },
       { path: "/reset-password", element: <ResetPassword /> },
       { path: "/blogs", element: <Blogs /> },
+      { path: "/blog/:id", element: <BlogDetails /> },
     ],
   },
   { path: "/login", element: <LoginPage /> },
