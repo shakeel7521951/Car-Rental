@@ -80,11 +80,13 @@ const ForgotPassword = () => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border-2 border-blue-200 p-2 rounded-lg w-full focus:outline-none focus:border-blue-500"
+              className="border-2 border-[#ffee0240] p-2 rounded-lg w-full focus:outline-none focus:border-[#FFEE02]"
             />
             <button
               onClick={handleSendOtp}
-              className="bg-blue-500 cursor-pointer text-white p-2 rounded-lg w-full hover:bg-blue-600 focus:outline-none"
+              className={`w-full bg-gradient-to-r from-[#FFEE02] to-yellow-500 text-black p-3 rounded-full mt-4 font-semibold hover:from-yellow-400 hover:to-[#FFEE02] transition duration-300 shadow-md cursor-pointer ${
+                isLoading ? "cursor-not-allowed opacity-70" : ""
+              }`}
             >
               Send OTP
             </button>

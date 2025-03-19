@@ -25,7 +25,7 @@ function BlogLabel() {
     <>
       {/* Mobile Toggle Button */}
       <button
-        className="sticky top-0 left-5 z-50 md:hidden bg-[#00667C] text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-[#004D5A]"
+        className="sticky top-[120px] left-5 z-[-10] md:hidden bg-[#00667C] text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-[#004D5A]"
         onClick={() => setIsOpen(true)}
       >
         <FaBars size={20} />

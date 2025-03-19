@@ -67,7 +67,7 @@ const router = createBrowserRouter([
       { path: "/home", element: <Home /> },
       { path: "/services", element: <Services /> },
       { path: "/booking/:id", element: <Booking /> },
-      { path: "/contact", element: <ContactUs /> },
+      { path: "/contact-us", element: <ContactUs /> },
       { path: "/about-us", element: <About /> },
       { path: "/my-profile", element: <MyProfile /> },
       { path: "/update-password", element: <UpdatePassword /> },

@@ -13,18 +13,26 @@ const UserOrders = () => {
   const orders = Array.isArray(data?.orders) ? data.orders : [];
 
   // Filter out orders where deletedBy="user"
-  const filteredOrders = orders.filter((order) => order.deletedBy !== "user");
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [finalFilteredOrders, setFinalFilteredOrders] = useState(filteredOrders);
+  const [finalFilteredOrders, setFinalFilteredOrders] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [filteredOrders, setFilteredOrders] = useState([])
   const navigate = useNavigate();
   const [deleteOrder] = useDeleteOrderMutation();
 
   useEffect(() => {
     setFinalFilteredOrders(filteredOrders);
-  }, [filteredOrders]);
+  }, []);
+  useEffect(() => {
+      
+    const filteredOrders = orders.filter((order) => order.deletedBy !== "user");
+    setFilteredOrders(filteredOrders)
+    setFinalFilteredOrders(filteredOrders)
+
+  }, [isLoading])
+  
 
   useEffect(() => {
     setFinalFilteredOrders(

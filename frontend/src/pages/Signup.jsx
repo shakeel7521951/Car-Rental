@@ -37,7 +37,7 @@ export default function RegisterPage() {
       toast.success(response.data?.message || "Registration successful!", {
         position: "top-center",
       });
-      navigate('/user-verification', { state: { user:formData } });
+      navigate("/user-verification", { state: { user: formData } });
     }
   };
 
@@ -54,7 +54,10 @@ export default function RegisterPage() {
         </div>
 
         {/* Right Side */}
-        <form className="w-full md:w-1/2 flex flex-col p-8" onSubmit={handleRegister}>
+        <form
+          className="w-full md:w-1/2 flex flex-col p-8"
+          onSubmit={handleRegister}
+        >
           <h2 className="text-3xl font-bold text-gray-800 mb-2 text-center">
             Create an Account
           </h2>
@@ -121,17 +124,11 @@ export default function RegisterPage() {
                 Remember me
               </label>
             </div>
-            <button
-              type="button"
-              className="text-blue-500 font-medium text-sm hover:underline"
-            >
-              Forgot password?
-            </button>
           </div>
 
           <button
             type="submit"
-            className={`w-full bg-blue-600 text-white p-3 rounded-lg mt-4 font-semibold hover:bg-blue-700 transition duration-300 shadow-md cursor-pointer ${
+            className={`w-full bg-gradient-to-r from-[#FFEE02] to-yellow-500 text-black p-3 rounded-full mt-4 font-semibold hover:from-yellow-400 hover:to-[#FFEE02] transition duration-300 shadow-md cursor-pointer ${
               isLoading ? "cursor-not-allowed opacity-70" : ""
             }`}
             disabled={isLoading}

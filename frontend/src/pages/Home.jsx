@@ -1,18 +1,20 @@
 import React from "react";
 import Header from "../components/home/Header";
-import Working from "../components/home/Working";
-import WhyUs from "../components/home/WhyUs";
+import TrustedCabService from "../components/home/TrustedCabService";
+import Services from "../components/home/Services";
 import PopularServices from "../components/home/PopularServices";
-import Download from "../components/home/Download";
+import Faqs from "../components/home/Faqs";
+import Plan from "../components/home/Plan";
 
 const Home = () => {
   return (
     <div>
       <Header />
-      <Working />
-      <WhyUs />
+      <TrustedCabService />
+      <Services />
+      <Plan />
       <PopularServices />
-      <Download />
+      <Faqs />
     </div>
   );
 };

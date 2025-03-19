@@ -2,10 +2,12 @@ import React from "react";
 import Heading from "../components/blogs/Heading";
 import BlogCards from "../components/blogs/BlogCards";
 import BlogLabel from "../components/blogs/BlogLabel";
+import Header from "../components/contact/Header";
 
 const Blogs = () => {
   return (
     <div>
+      <Header title="Blogs" name="Our Blogs"/>
       <Heading />
       <div className="grid grid-cols-3">
         <div className="md:col-span-1">
