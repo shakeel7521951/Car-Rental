@@ -41,9 +41,8 @@ function BlogLabel() {
 
       {/* Sidebar Menu */}
       <div
-        className={`fixed top-0 right-0 w-72 p-5 shadow-lg md:rounded-xl bg-white transform transition-transform duration-300 ease-in-out z-50 md:sticky md:top-0 md:left-5 md:w-full md:translate-x-0 ${
-          isOpen ? "translate-x-0 w-full" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 w-72 p-5 shadow-lg md:rounded-xl bg-white transform transition-transform duration-300 ease-in-out z-50 md:sticky md:top-0 md:left-5 md:w-full md:translate-x-0 ${isOpen ? "translate-x-0 w-full" : "translate-x-full"
+          }`}
       >
         {/* Close Button for Mobile */}
         <button
@@ -69,7 +68,7 @@ function BlogLabel() {
         {/* Search Input */}
         <label
           htmlFor="search"
-          className="block text-gray-700 font-medium mb-2"
+          className="block text-black font-medium mb-2"
         >
           🔍 Search Articles
         </label>
@@ -81,40 +80,50 @@ function BlogLabel() {
         />
 
         {/* Filter Section */}
-        <div className="mb-5">
-          <label
-            htmlFor="filter"
-            className="block text-gray-700 font-medium mb-1"
-          >
+        <div className="mb-5 relative">
+          <label htmlFor="filter" className="block text-black font-medium mb-1">
             📌 Filter
           </label>
-          <select
-            id="filter"
-            className="w-full p-2 border rounded-md bg-gray-100 hover:bg-gray-200 cursor-pointer"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            {categories.map((category, index) => (
-              <option key={index} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <button
+              className="w-full p-2 border rounded-md bg-white text-black text-left"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {selectedCategory}
+            </button>
+
+            {isOpen && (
+              <ul className="absolute w-full border bg-black mt-1 z-50 max-h-60 overflow-auto">
+                {categories.map((category, index) => (
+                  <li
+                    key={index}
+                    className={`p-2 cursor-pointer hover:bg-[#FFEE02] hover:text-black ${selectedCategory === category ? "bg-[#FFEE02] text-black font-semibold" : "text-white"
+                      }`}
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      setIsOpen(false);
+                    }}
+                  >
+                    {category}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
 
         {/* Browse by Categories */}
-        <h2 className="text-xl font-semibold mb-4 text-[#00667C]">
+        <h2 className="text-xl font-semibold mb-4 text-black">
           📂 Categories
         </h2>
         <div className="h-[40vh] overflow-y-auto pr-2 space-y-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
           {categories.map((category, index) => (
             <button
               key={index}
-              className={`w-full text-left px-4 py-2 rounded-md transition-all duration-300 ${
-                selectedCategory === category
-                  ? "bg-[#00667C] text-white font-semibold shadow-md"
-                  : "bg-gray-200 hover:bg-gray-300 text-gray-800"
-              }`}
+              className={`w-full text-left px-4 py-2 rounded-md transition-all duration-300 ${selectedCategory === category
+                  ? "bg-[#FFEE02] text-black font-semibold shadow-md"
+                  : "bg-black text-white"
+                }`}
               onClick={() => setSelectedCategory(category)}
             >
               {category}
