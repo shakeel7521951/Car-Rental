@@ -48,7 +48,7 @@ const OurServices = () => {
           <button
             key={name}
             className={`flex items-center gap-2 px-4 py-2 rounded-full shadow-md cursor-pointer ${
-              selectedCategory === name ? "bg-blue-700 text-white" : "bg-gray-200 text-gray-700"
+              selectedCategory === name ? "bg-[#FFEE02] text-black" : "bg-gray-200 text-gray-700"
             } transition-all duration-300`}
             onClick={() => setSelectedCategory(name)}
           >
@@ -103,7 +103,7 @@ const OurServices = () => {
                   <Link
                     to={`/booking/${service._id}`}
                     state={{ service }}
-                    className="bg-blue-700 text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-blue-800 transition"
+                    className="bg-[#FFEE02] text-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#ffee02d6] transition"
                   >
                     Book Now
                   </Link>

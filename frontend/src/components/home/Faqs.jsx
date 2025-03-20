@@ -29,9 +29,9 @@ const Faqs = () => {
   };
 
   return (
-    <div className="container flex gap-20 mx-auto md:h-[90vh] items-center">
+    <div className="container flex gap-20 my-5 mx-auto md:h-[90vh] items-center">
       {/* FAQ Section */}
-      <div className="w-[100%] md:w-[50%] mx-5">
+      <div className="w-[100%] md:w-[50%] mx-5 pt-20">
         <p className="mb-2">Have you any question?</p>
         <h1 className="text-3xl md:text-5xl font-bold mb-6">
           Frequently Asked Questions?

@@ -87,7 +87,7 @@ const Footer = () => {
               <hr className="w-[30%] bg-[#FFEE02] h-1 rounded-full mt-[-2px]" />
             </div>
             <div className="flex flex-col gap-3 mt-2">
-              {["Home", "Services", "About", "Contact"].map((item, index) => (
+              {["Home", "Services", "About Us", "Contact Us"].map((item, index) => (
                 <div key={index} className="flex gap-2 items-center">
                   <LuChevronsLeft className="mt-0.5" />
                   <Link

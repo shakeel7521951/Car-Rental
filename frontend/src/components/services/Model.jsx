@@ -27,26 +27,24 @@ const Modal = () => {
   const orderCar = async (e) => {
     e.preventDefault();
     const id = service._id;
-  
-    // Combine date and time into a single ISO string in the user's local time zone
+
+    // Combine date and time into a single local date-time object
     const localDateTime = new Date(`${user.date}T${user.time}`);
-  
+
     // Convert the local date and time to UTC
-    const utcDateTime = new Date(
-      localDateTime.getTime() - localDateTime.getTimezoneOffset()
-    ).toISOString();
-  
+    const utcDateTime = new Date(localDateTime.getTime()).toISOString();
+
     const orderData = {
       data: {
         ...user,
-        pickupDateTime: utcDateTime, // Send the UTC date and time
+        pickupDateTime: utcDateTime, // Send the UTC date and time correctly
       },
       price: service.price,
     };
-  
+
     try {
       const response = await createOrder({ id, data: orderData });
-  
+
       if (response.error) {
         toast.error(response.error.data?.message || "Something went wrong", {
           position: "top-center",
@@ -65,7 +63,10 @@ const Modal = () => {
   return (
     <div className="flex items-center justify-center p-12">
       <div className="mx-auto w-full max-w-[550px] bg-white p-6 rounded-lg shadow-lg">
-        <div key={carId} className="relative flex flex-col justify-center items-center gap-4 mb-4">
+        <div
+          key={carId}
+          className="relative flex flex-col justify-center items-center gap-4 mb-4"
+        >
           <h1 className="absolute text-3xl bottom-0 pb-4 font-semibold text-white">
             {service.serviceName}
           </h1>
@@ -80,7 +81,10 @@ const Modal = () => {
           <div className="-mx-3 flex flex-wrap">
             <div className="w-full px-3 sm:w-1/2">
               <div className="mb-5">
-                <label htmlFor="date" className="mb-3 block text-base font-medium text-[#07074D]">
+                <label
+                  htmlFor="date"
+                  className="mb-3 block text-base font-medium text-[#07074D]"
+                >
                   Date
                 </label>
                 <input
@@ -97,7 +101,10 @@ const Modal = () => {
             </div>
             <div className="w-full px-3 sm:w-1/2">
               <div className="mb-5">
-                <label htmlFor="time" className="mb-3 block text-base font-medium text-[#07074D]">
+                <label
+                  htmlFor="time"
+                  className="mb-3 block text-base font-medium text-[#07074D]"
+                >
                   Time
                 </label>
                 <input
@@ -150,8 +157,12 @@ const Modal = () => {
                 </div>
               </div>
               <div className="w-full flex justify-between px-3">
-                <div className="text-2xl font-bold text-gray-800">Total Price</div>
-                <div className="text-3xl font-semibold text-gray-900">{service.price}</div>
+                <div className="text-2xl font-bold text-gray-800">
+                  Total Price
+                </div>
+                <div className="text-3xl font-semibold text-gray-900">
+                  {service.price}
+                </div>
               </div>
             </div>
           </div>
@@ -161,7 +172,7 @@ const Modal = () => {
               type="submit"
               disabled={isLoading}
               aria-disabled={isLoading}
-              className={`hover:shadow-md w-full rounded-md bg-blue-600 py-3 px-8 text-center text-base font-semibold text-white outline-none transition duration-200 hover:bg-blue-700 ${
+              className={`hover:shadow-md w-full rounded-full bg-[#FFEE02] py-3 px-8 text-center text-base font-semibold text-black outline-none transition duration-200 hover:bg-[#FFEE02] ${
                 isLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer"
               }`}
             >

@@ -31,6 +31,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Blogs from "./pages/Blogs";
 import BlogDetails from "./components/blogs/BlogDetails";
+import AdminBlogs from "./pages/dashboard/AdminBlogs";
 
 const MainLayout = () => {
   return (
@@ -94,6 +95,7 @@ const router = createBrowserRouter([
           { path: "/users", element: <UsersPage /> },
           { path: "/sales", element: <SalesPage /> },
           { path: "/orders", element: <OrdersPage /> },
+          { path: "/admin-blogs", element: <AdminBlogs /> },
         ],
       },
     ],

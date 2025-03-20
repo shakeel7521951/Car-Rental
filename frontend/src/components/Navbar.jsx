@@ -159,7 +159,7 @@ const Navbar = () => {
           {userProfile && (
             <div className="relative">
               <div
-                className="w-10 h-10 flex items-center justify-center bg-[#1572D3] text-white font-bold rounded-full cursor-pointer overflow-hidden border-2 border-white hover:opacity-90 transition"
+                className="w-10 h-10 flex items-center justify-center text-white font-bold rounded-full cursor-pointer overflow-hidden border-2 border-white hover:opacity-90 transition"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 {userProfile.profilePic ? (
@@ -225,7 +225,7 @@ const Navbar = () => {
         >
           {/* Close Button */}
           <button
-            className="absolute top-6 right-6 text-black text-2xl hover:text-gray-600 transition"
+            className="absolute top-6 right-6 cursor-pointer text-black text-2xl hover:text-gray-600 transition"
             onClick={() => setShowSidebar(false)}
           >
             ✖
@@ -235,28 +235,28 @@ const Navbar = () => {
           <ul className="flex flex-col gap-8 mt-20">
             <Link
               to="/"
-              className="font-bold text-2xl hover:text-[#1572D3] transition-colors"
+              className="font-bold text-2xl hover:text-[#FFEE02] transition-colors"
               onClick={() => setShowSidebar(false)}
             >
               Home
             </Link>
             <Link
               to="/services"
-              className="font-bold text-2xl hover:text-[#1572D3] transition-colors"
+              className="font-bold text-2xl hover:text-[#FFEE02] transition-colors"
               onClick={() => setShowSidebar(false)}
             >
               Services
             </Link>
             <Link
               to="/about-us"
-              className="font-bold text-2xl hover:text-[#1572D3] transition-colors"
+              className="font-bold text-2xl hover:text-[#FFEE02] transition-colors"
               onClick={() => setShowSidebar(false)}
             >
               About
             </Link>
             <Link
               to="/contact-us"
-              className="font-bold text-2xl hover:text-[#1572D3] transition-colors"
+              className="font-bold text-2xl hover:text-[#FFEE02] transition-colors"
               onClick={() => setShowSidebar(false)}
             >
               Contact
