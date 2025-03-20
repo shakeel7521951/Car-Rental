@@ -9,11 +9,11 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  postedDate: {
-    type: Date,
+  author: {
+    type: String,
     default: Date.now,
   },
-  image: {
+  blogImage: {
     type: String,
     required: true,
   },
@@ -43,7 +43,7 @@ const blogSchema = new mongoose.Schema({
       },
     },
   ],
-});
+},[]);
 
 const Blog = mongoose.model("Blog", blogSchema);
 export default Blog;

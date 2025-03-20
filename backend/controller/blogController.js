@@ -2,30 +2,28 @@ import Blog from "../models/Blogs.js";
 
 export const addBlog = async (req, res) => {
   try {
-    const { title, description, postedDate } = req.body;
-    const image = req.file?.path;
+    const { title, description, author } = req.body;
+    const blogImage = req.file ? req.file.path : null;
 
-    if (!title || !description || !postedDate || !image) {
+    if (!title || !description || !author || !blogImage) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
     const newBlog = new Blog({
       title,
       description,
-      postedDate,
-      image,
+      author,
+      blogImage,
     });
 
     await newBlog.save();
 
-    res.status(201).json({
+    res.status(200).json({
       message: "Blog added successfully",
       blog: newBlog,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", error: error.message });
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
 

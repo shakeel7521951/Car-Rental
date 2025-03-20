@@ -1,29 +1,25 @@
 import { CheckCircle, Clock, DollarSign, ShoppingBag } from "lucide-react";
 import { motion } from "framer-motion";
-
+import { useState } from "react";
 import Header from "../../components/dashboard/common/Header";
 import StatCard from "../../components/dashboard/common/StatCard";
-import DailyOrders from '../../components/dashboard/orders/DailyOrders';
-import OrdersTable from '../../components/dashboard/orders/OrdersTable';
-import { useGetAllOrdersQuery } from "../../redux/slices/OrderSlices";
 import AdminBlogsSection from "../../components/dashboard/blogs/AdminBlogsSection";
+import Button from "../../components/Button";
+import BlogModal from "../../components/dashboard/blogs/BlogModal";
 
 const AdminBlogs = () => {
-  const { data, isLoading, error } = useGetAllOrdersQuery();
-  const orders = data?.orders && Array.isArray(data.orders) ? data.orders : [];
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
-  if (error) {
-    return <p>Error fetching orders: {error.message}</p>;
-  }
+  const handleSubmit = (data) => {
+    console.log("Blog Data Submitted:", data);
+  };
 
   return (
     <div className="flex-1 relative z-10 overflow-auto">
-      <Header title={"Blogs"} />
-
+      <Header title="Blogs" />
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         <motion.div
           className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
@@ -34,35 +30,26 @@ const AdminBlogs = () => {
           <StatCard
             name="Total Blogs"
             icon={ShoppingBag}
-            value={orders.length}
+            value={10}
             color="#6366F1"
           />
-          {/* <StatCard
-            name="Pending Orders"
-            icon={Clock}
-            value={orders.filter((order)=>order.orderStatus === 'Pending').length}
-            color="#F59E0B"
-          />
-          <StatCard
-            name="Completed Orders"
-            icon={CheckCircle}
-            value={orders.filter((order)=>order.orderStatus === "Fulfilled").length}
-            color="#10B981"
-          />
-          <StatCard
-            name="Total Revenue"
-            icon={DollarSign}
-            value={orders.reduce((total,order)=>total+(order.price || 0),0)}
-            color="#EF4444"
-          /> */}
         </motion.div>
 
-        {/* <OrdersTable /> */}
+        <Button
+          text="Add Blog"
+          bgHover="black"
+          textHover="white"
+          cutHover="white"
+          onClick={handleOpenModal}
+        />
         <AdminBlogsSection />
-        <div className="grid grid-cols-1 gap-8 mt-8">
-          {/* <DailyOrders /> */}
-        </div>
       </main>
+
+      <BlogModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 };

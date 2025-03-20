@@ -14,7 +14,7 @@ import upload from "../middlewares/multerConfig.js";
 const router = express.Router();
 
 // Blog Routes
-router.post("/add-blog",upload.single('image'), auth, addBlog);
+router.post("/add-blog",upload.single('blogImage'), auth, addBlog);
 router.get("/get-all-blogs", getAllBlogs);
 router.delete("/delete-blog/:blogId", auth, deleteBlog);
 router.put("/update-blog/:blogId", auth, updateBlog);
