@@ -1,6 +1,6 @@
 import React from "react";
 
-const Button = ({ text,bgHover="white",textHover="black" , cutHover="black" }) => {
+const Button = ({ text,bgHover="white",textHover="black" , cutHover="black",onClick }) => {
   return (
     <div>
       <button
@@ -12,7 +12,7 @@ const Button = ({ text,bgHover="white",textHover="black" , cutHover="black" }) =
           style={{ clipPath: "polygon(100% 0, 45% 100%, 25% 100%, 78% 0)" }}
         ></div>
         <span className={`absolute inset-0 bg-${bgHover} w-0 transition-all duration-500 group-hover:w-full z-10`}></span>
-        <span className={`relative z-30 ms-[-30px] group-hover:text-${textHover}`}>{text}</span>
+        <span className={`relative z-30 ms-[-30px] group-hover:text-${textHover}`} onClick={onClick}>{text}</span>
       </button>
     </div>
   );

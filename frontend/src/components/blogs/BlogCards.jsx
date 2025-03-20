@@ -20,7 +20,7 @@ function BlogCards() {
               alt="not found"
               className="rounded-xl h-[40vh]"
             />
-            <p className="bg-[#EBF1F8] py-1 px-2 rounded-full text-[#1447e6] font-semibold hover:cursor-pointer w-20 text-center text-sm">
+            <p className="bg-[#ffee0275] py-1 px-2 rounded-full text-black font-semibold hover:cursor-pointer w-20 text-center text-sm">
               {item.category}
             </p>
             <h2 className="lg:text-[1.2rem] md:text-[1rem] text-[20px] font-bold text-[#333]">
