@@ -13,7 +13,7 @@ export const BlogApi = createApi({
       query: (data) => ({
         url: "/add-blog",
         method: "POST",
-        body: data, 
+        body: data,
       }),
       invalidatesTags: ["Blog"],
     }),
@@ -22,6 +22,14 @@ export const BlogApi = createApi({
     getAllBlogs: builder.query({
       query: () => ({
         url: "/get-all-blogs",
+        method: "GET",
+      }),
+      providesTags: ["Blog"],
+    }),
+
+    getSingleBlog: builder.query({
+      query: (blogId) => ({
+        url: `/get-single-blog/${blogId}`,
         method: "GET",
       }),
       providesTags: ["Blog"],
@@ -48,10 +56,10 @@ export const BlogApi = createApi({
 
     // Add a comment to a blog
     addComment: builder.mutation({
-      query: ({ data, blogId }) => ({
+      query: ({ blogId, commentText }) => ({
         url: `/add-comment/${blogId}`,
         method: "POST",
-        body: data,
+        body: { commentText }, // Send as an object
       }),
       invalidatesTags: ["Blog"],
     }),
@@ -67,8 +75,8 @@ export const BlogApi = createApi({
 
     // Like a comment
     likeComment: builder.mutation({
-      query: ({ commentId }) => ({
-        url: `/comment/${commentId}/like`,
+      query: ({ blogId, commentId }) => ({
+        url: `/blogs/${blogId}/comments/${commentId}/like`, // Updated URL
         method: "PUT",
       }),
       invalidatesTags: ["Blog"],
@@ -79,6 +87,7 @@ export const BlogApi = createApi({
 export const {
   useAddBlogMutation,
   useGetAllBlogsQuery,
+  useGetSingleBlogQuery,
   useDeleteBlogMutation,
   useUpdateBlogMutation,
   useAddCommentMutation,

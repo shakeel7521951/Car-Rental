@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const blogSchema = new mongoose.Schema({
   title: {
@@ -17,6 +17,10 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  publishDate: {
+    type: Date,
+    default: Date.now,
+  },
   likes: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -33,17 +37,20 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      likes: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
+      likes: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ], 
       date: {
         type: Date,
         default: Date.now,
       },
     },
   ],
-},[]);
+});
 
+// ✅ Ensure the correct model export
 const Blog = mongoose.model("Blog", blogSchema);
 export default Blog;

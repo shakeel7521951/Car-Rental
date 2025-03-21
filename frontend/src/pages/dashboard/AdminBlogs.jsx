@@ -6,6 +6,7 @@ import StatCard from "../../components/dashboard/common/StatCard";
 import AdminBlogsSection from "../../components/dashboard/blogs/AdminBlogsSection";
 import Button from "../../components/Button";
 import BlogModal from "../../components/dashboard/blogs/BlogModal";
+import { useGetAllBlogsQuery } from "../../redux/slices/BlogSlice";
 
 const AdminBlogs = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

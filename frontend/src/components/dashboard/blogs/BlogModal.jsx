@@ -25,7 +25,7 @@ const BlogModel = ({ isOpen, onClose }) => {
       setFormData((prev) => ({
         ...prev,
         blogImage: file,
-        previewImage: URL.createObjectURL(file), 
+        previewImage: URL.createObjectURL(file),
       }));
     }
   };
@@ -37,18 +37,17 @@ const BlogModel = ({ isOpen, onClose }) => {
       formDataToSend.append("title", formData.title);
       formDataToSend.append("author", formData.author);
       formDataToSend.append("description", formData.description);
-      formDataToSend.append("blogImage", formData.blogImage); 
+      formDataToSend.append("blogImage", formData.blogImage);
 
-      // Call the API
       const res = await addBlog(formDataToSend).unwrap();
-      console.log(res);
-      if (res.status === 200) {
-        onClose();
+
+      if (res?.blog) {
         toast.success(res.message, { position: "top-center" });
-        navigate("/admin-blogs")
+          onClose();
+          navigate("/admin-blogs");
       }
     } catch (error) {
-      toast.error(error.data?.message || "An error occurred");
+      toast.error(error?.data?.message || "An error occurred");
     }
   };
 

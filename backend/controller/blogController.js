@@ -23,7 +23,9 @@ export const addBlog = async (req, res) => {
       blog: newBlog,
     });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
   }
 };
 
@@ -66,15 +68,15 @@ export const deleteBlog = async (req, res) => {
 export const updateBlog = async (req, res) => {
   try {
     const { blogId } = req.params;
-    const blogData = { ...req.body };
+    const { title, author, description } = req.body;
+    const blogImage = req.file ? req.file.path : null;
 
     if (!blogId) {
       return res.status(400).json({ message: "Blog ID is required" });
     }
 
-    if (Object.keys(blogData).length === 0) {
-      return res.status(400).json({ message: "No update data provided" });
-    }
+    const blogData = { title, author, description };
+    if (blogImage) blogData.blogImage = blogImage;
 
     const updatedBlog = await Blog.findByIdAndUpdate(blogId, blogData, {
       new: true,
@@ -90,6 +92,21 @@ export const updateBlog = async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+export const getSingleBlog = async (req, res) => {
+  try {
+    const { blogId } = req.params;
+    const blog = await Blog.findById(blogId);
+
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    res.status(200).json(blog);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -175,30 +192,33 @@ export const likeComment = async (req, res) => {
 
     const blog = await Blog.findById(blogId);
     if (!blog) {
+      console.log("Blog not found");
       return res.status(404).json({ message: "Blog not found" });
     }
 
+    console.log("Blog comments:", blog.comments);
+
     const comment = blog.comments.find((c) => c._id.toString() === commentId);
     if (!comment) {
+      console.log("Comment not found");
       return res.status(404).json({ message: "Comment not found" });
     }
 
     const hasLiked = comment.likes.includes(userId);
+    console.log("Has liked:", hasLiked);
 
     if (hasLiked) {
       comment.likes = comment.likes.filter((id) => id.toString() !== userId);
       await blog.save();
-      return res
-        .status(200)
-        .json({ message: "Like removed from comment", blog });
+      return res.status(200).json({ message: "Like removed from comment", blog });
     } else {
       comment.likes.push(userId);
       await blog.save();
       return res.status(200).json({ message: "Comment liked", blog });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", error: error.message });
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
+

@@ -4,6 +4,7 @@ import {
   addBlog,
   deleteBlog,
   getAllBlogs,
+  getSingleBlog,
   likeBlog,
   likeComment,
   postComment,
@@ -17,11 +18,10 @@ const router = express.Router();
 router.post("/add-blog",upload.single('blogImage'), auth, addBlog);
 router.get("/get-all-blogs", getAllBlogs);
 router.delete("/delete-blog/:blogId", auth, deleteBlog);
-router.put("/update-blog/:blogId", auth, updateBlog);
-
+router.put("/update-blog/:blogId", upload.single('blogImage'), auth, updateBlog);
+router.get('/get-single-blog/:blogId',getSingleBlog);
 // Comment Routes
 router.post("/add-comment/:blogId", auth, postComment);
 router.put("/blog/:blogId/like", auth, likeBlog);
-router.put("/comment/:commentId/like", auth, likeComment);
-
+router.put("/blogs/:blogId/comments/:commentId/like", auth, likeComment);
 export default router;
